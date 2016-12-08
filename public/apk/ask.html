@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <a href="/apk/user/userCenter.html" class="peo"></a>
+    <p>我的问</p>
+</div>
+
+<div class="questionPage">
+    <div class="personInfo">
+        <a href="#" class="img"><img src="images/peo.png" id="userImg"/></a>
+        <div class="des">
+            <h3 id="userName"><a href="#" class="share"></a>唐老师</h3>
+            <p class="identity" id="company">巅峰财富|策略分析师</p>
+            <p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
+                丁凤楚 男，汉</p>
+            <div class="act act2">
+                <a href="#" id="answerCount">答复11122</a>
+                <a href="#" id="fansCount">粉丝11112</a>
+                <a href="#" id="income">财富11112</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="addQues">
+        <div class="d1" id="nowPrice">当前报酬：<i>100U</i></div>
+        <div class="d2">追加悬赏金额：<input type="text" name="" id="addPrice"/> U <i>（追加后更快得到答复）</i></div>
+        <div class="txt">
+            <textarea placeholder="继续追问" id="content"></textarea>
+            <p>0/100</p>
+        </div>
+        <div class="center btn"><a href="#" class="abtn" onclick="query()" id="submit">提交问题</a></div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/recent.js"></script>
+<script src="js/all.js"></script>
+<script>
+    $(function () {
+        var id = getArgsFromHref('id');
+        id = id.replace("#", "");
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/user/information',
+            data: {
+                "ut": id
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.data;
+                if (json != null) {
+                    var action = '';
+                    if (json.isFollow == 1) action = 'on';
+                    else action = 'off';
+                    var str = '<a id="follow" href="#" class="share ' + action + '" onclick="follow(\'' + getArgsFromHref('id') + '\')"></a>' + json.user_name;
+                    $("#userName").html(str);
+                    $("#userImg").attr('src', json.imgs);
+                    $("#answerCount").html('答复' + json.answerCount);
+                    $("#fansCount").html('粉丝' + json.fansCount);
+                    str = '当前报酬：<i id="basePrice">' + json.basePrice + 'U</i>';
+                    $("#nowPrice").html(str);
+                    $('#submit').attr('answerut', json.ut);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    });
+
+
+    //关注
+    function follow(userId) {
+        //请求数据，获得用户详情
+        var userId = userId.replace("#", "");
+        $.ajax({
+            type: 'POST',
+            url: '/user/follow',
+            data: {
+                "userId": userId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                if (json == '关注成功') {
+                    $('#follow').attr('class','share on');
+                }
+                if (json == '取消关注') {
+                    $('#follow').attr('class','share off');
+                }
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        })
+    }
+
+    function pay() {
+        var basePrice = $("#basePrice").html();
+        basePrice = basePrice.replace("U", "");
+        var addPrice = $('#addPrice').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/pay/order',
+            data: {
+                "basePrice": basePrice, "addPrice": addPrice
+                , "type": 0
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        })
+
+    }
+
+    function query() {
+        var basePrice = $("#basePrice").html();
+        basePrice = basePrice.replace("U", "");
+        var addPrice = $('#addPrice').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/user/query',
+            data: {
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                if(code == 0){
+                    var result = data.data;
+                    var total = parseFloat(basePrice) + parseFloat(addPrice);
+                    if(total > result.balance){
+                        alert('金额不足,去充值');
+                        window.location.href = '/apk/recharge.html';
+                    }
+                    else{
+                        alert('余额充足,将付钱');
+                        submitQuestion();
+                    }
+
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+
+    function submitQuestion() {
+        var basePrice = $("#basePrice").html();
+        basePrice = basePrice.replace("U", "");
+        var addPrice = $('#addPrice').val();
+        var content = $('#content').val();
+        var answerut = $('#submit').attr('answerut');
+
+        $.ajax({
+            type: 'POST',
+            url: '/question/submit',
+            data: {
+                "basePrice": basePrice, "addPrice": addPrice
+                , "content": content, "answerut": answerut
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
+</body>
+</html>
+

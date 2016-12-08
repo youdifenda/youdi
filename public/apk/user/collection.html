@@ -1,0 +1,358 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="../build/flexible_css.debug.js"></script>
+    <script src="../build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="../css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <a href="#" class="txt" id="edit">编辑</a>
+    <p>我的收藏</p>
+</div>
+
+<div class="dalist myfavlist">
+    <ul id="myul">
+        <!--<li>-->
+            <!--<span class="checkModel"><input type="checkbox" class="sigleck" name=""></span>-->
+            <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+            <!--<div class="personInfo">-->
+                <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+                <!--<div class="des">-->
+                    <!--<h3>唐老师</h3>-->
+                    <!--<p class="identity">巅峰财富|策略分析师</p>-->
+                    <!--<div class="status">-->
+                        <!--<span class="play"><i></i>点击播放</span> 14 ''-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</li>-->
+
+        <!--<li>-->
+            <!--<span class="checkModel"><input type="checkbox" class="sigleck" name=""></span>-->
+            <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+            <!--<div class="personInfo">-->
+                <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+                <!--<div class="des">-->
+                    <!--<h3>唐老师</h3>-->
+                    <!--<p class="identity">巅峰财富|策略分析师</p>-->
+                    <!--<div class="status">-->
+                        <!--<a href="javascript:;" class="vbtn viewbtn1">140U币点击查看</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+<!-- 查看信息 -->
+<div class="fixbottomBox fixbottomInfo" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="personInfo">
+            <a href="#" class="img"><img src="../images/peo.png" id="infohead"/></a>
+            <div class="des">
+                <h3 id="infoName">唐老师</h3>
+                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <div class="showpic"><img src="../images/temp.jpg" id="infoimg"/></div>
+                <p class="pram" id="infoContent">
+                    尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 登录 -->
+<div class="fixbottomBox fixbottomLogin" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="btn"><a href="login.html">登录</a> <a href="register.html">注册</a></div>
+        <h4>第三方登录</h4>
+        <div class="thirdLogin">
+            <a href="#" class="a1"><span></span>微博</a>
+            <a href="#" class="a2"><span></span>微信</a>
+            <a href="#" class="a3"><span></span>QQ</a>
+        </div>
+    </div>
+</div>
+
+<!-- 支付 -->
+<div class="fixbottomBox fixbottomPay" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <h4>使用u比支付</h4>
+        <p id="payContent">您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
+        <div class="btn"><a href="#" class="cfbtn" id="goPay">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
+    </div>
+</div>
+
+<div class="fixBottomEdit">
+    <a href="#" onclick="clearCollect()">删除</a>
+    <label><span class="checkModel"><input type="checkbox" id="allck" name=""></span> 全选</label>
+</div>
+<script src="../js/zepto.min.js"></script>
+<script src="../js/all.js"></script>
+<script src="../js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#edit').click(function () {
+            if ($('body').hasClass('bodyEdit')) {
+                $(this).text('编辑');
+                $('body').removeClass('bodyEdit');
+            } else {
+                $(this).text('完成');
+                $('body').addClass('bodyEdit');
+            }
+        });
+
+//        $('.checkModel input').click(function () {
+//            var _this = this;
+//            if (this.id == 'allck') {
+//                if (_this.checked) {
+//                    $('.checkModel input').prop('checked', true);
+//                    $('.checkModel').addClass('checkModelon');
+//                    $(_this).parent().addClass('checkModelon');
+//                } else {
+//                    $('.checkModel input').prop('checked', false);
+//                    $('.checkModel').removeClass('checkModelon');
+//                    $(_this).parent().removeClass('checkModelon');
+//                }
+//            } else {
+//                if ($('.sigleck:checked').length == $('.sigleck').length) {
+//                    $('#allck').prop('checked', true);
+//                    $('#allck').parent().addClass('checkModelon');
+//                } else {
+//                    $('#allck').prop('checked', false);
+//                    $('#allck').parent().removeClass('checkModelon');
+//                }
+//                checkModel(_this)
+//            }
+//        });
+
+        function checkModel(_this) {
+            if (_this.checked) {
+                $(_this).prop('checked', true);
+                $(_this).parent().addClass('checkModelon');
+            } else {
+                $(_this).prop('checked', false);
+                $(_this).parent().removeClass('checkModelon');
+            }
+        }
+
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/user/showCollection',
+            data: {},
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                var result = data.data;
+                //成功获取到数据
+                if (code == 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var action = '';
+                        var html = '';
+                        //已付钱
+                        if (result[i].payment == 1) {
+                            if (result[i].type == 1) {
+                                action = 'play';
+                            }
+                            else if (result[i].type == 0) {
+                                action = 'info';
+                            }
+                        }
+                        //未付钱
+                        else {
+                            action = 'noPay';
+                        }
+                        switch (action) {
+                            case 'play':
+                                html += '<li>';
+                                html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
+                                html += '<p class="pram">' + result[i].questioncontent + '</p>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '" /></a>';
+                                html += '<div class="des">';
+                                html += '<h3>' + result[i].user_name + '</h3>';
+                                html += '<p class="identity">巅峰财富|策略分析师</p>';
+                                html += '<div class="status">';
+                                html += '<span class="play"><i></i>点击播放</span> 14 \'\'';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                            case 'info':
+                                html += '<li>';
+                                html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
+                                html += '<p class="pram">' + result[i].questioncontent + '</p>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '"/></a>';
+                                html += '<div class="des">';
+                                html += '<h3>' + result[i].user_name + '</h3>';
+                                html += '<p class="identity">巅峰财富|策略分析师</p>';
+                                html += '<div class="status">';
+                                html += '<a href="javascript:;" class="vbtn ' + action + '" id="' + result[i].id + '">点击查看</a>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                            case 'noPay':
+                                html += '<li>';
+                                html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
+                                html += '<p class="pram">' + result[i].questioncontent + '</p>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '"/></a>';
+                                html += '<div class="des">';
+                                html += '<h3>' + result[i].user_name + '</h3>';
+                                html += '<p class="identity">巅峰财富|策略分析师</p>';
+                                html += '<div class="status">';
+                                html += '<a href="javascript:;" class="vbtn ' + action + '" id="'+result[i].id+'">' + result[i].listenprice + 'U币点击查看</a>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                        }
+                        $('#myul').append(html);
+                    }
+                }
+                //没有获得正确的数据
+                else {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        });
+        $('.myfavlist').on('click', '.personInfo .info', function () {
+            var answerId = this.id;
+            $.ajax({
+                type: 'POST',
+                url: '/question/detail',
+                data: {answerId: answerId},
+                dataType: 'json',
+                timeout: 1000,
+                success: function (data) {
+                    var json = data.data;
+                    for (var i = 0; i < json.length; i++) {
+                        $('#infoName').html(json[i].user_name);
+                        $('#infoTeam').html(json[i].user_name);
+                        $('#infoContent').html(json[i].content);
+                        $('#infohead').attr("src", json[i].fileurl);
+                        $('#infoimg').attr("src", json[i].fileurl);
+                    }
+                    //返回的数据为空的情况
+                    //后台做验证
+                    //此时可能是未付款，或者未登录
+                    if (json.length == 0) {
+                        //未登录
+                        if (data.message == '未登录') {
+                            animateshowHide($('.fixbottomLogin .bg'));
+                        }
+                        else if (data.message == '未付款') {
+                            animateshowHide($('.fixbottomPay .bg'));
+                        }
+                    }
+                    else {
+                        animateshowHide($('.fixbottomInfo .bg'));
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            });
+            return false;
+        });
+
+//        $('.myfavlist').on('click', '.personInfo .out', function () {
+//            animateshowHide($('.fixbottomLogin .bg'));
+//            return false;
+//        });
+
+        $('.myfavlist').on('click', '.personInfo .noPay', function () {
+            var id = '#' + this.id;
+            var answerId = this.id;
+            var html = $(id).html();
+            html = html.substr(0, html.length - 6);
+            var str = '您将支付' + html + '枚U币用于旁听该问题回答，请确认支付。';
+            $('#payContent').html(str);
+            $('#goPay').attr('onclick', 'pay(' + answerId + ')');
+            animateshowHide($('.fixbottomPay .bg'));
+            return false;
+        });
+        $('.myfavlist').on('click', '.personInfo .play', function () {
+            alert('play');
+            return false;
+        });
+        $('body').on('click', '.checkModel input', function () {
+            var _this = this;
+            if (this.id == 'allck') {
+                if (_this.checked) {
+                    $('.checkModel input').prop('checked', true);
+                    $('.checkModel').addClass('checkModelon');
+                    $(_this).parent().addClass('checkModelon');
+                } else {
+                    $('.checkModel input').prop('checked', false);
+                    $('.checkModel').removeClass('checkModelon');
+                    $(_this).parent().removeClass('checkModelon');
+                }
+            } else {
+                if ($('.sigleck:checked').length == $('.sigleck').length) {
+                    $('#allck').prop('checked', true);
+                    $('#allck').parent().addClass('checkModelon');
+                } else {
+                    $('#allck').prop('checked', false);
+                    $('#allck').parent().removeClass('checkModelon');
+                }
+                checkModel(_this)
+            }
+        })
+    });
+
+    function clearCollect() {
+        var result = $('.sigleck:checked');
+        var length = result.length;
+        var ids = '';
+        for (var i = 0; i < length; i++) {
+            var item = result[i];
+            var name = item['name'];
+            ids += name;
+            if (i != (length - 1)) {
+                ids += ',';
+            }
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/user/clearCollect',
+            data: {ids: ids},
+            dataType: 'json',
+            timeout: 1000,
+            success: function (data) {
+                var json = data.data;
+                alert(data.message);
+                location.reload();
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        });
+    }
+</script>
+</body>
+</html>
+

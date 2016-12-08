@@ -1,0 +1,17 @@
+[common]
+;支持直接写PHP中的已定义常量
+application.directory = APP_PATH "/application/"
+application.bootstrap = APP_PATH "/application/BootStrap.php"
+
+[routes]
+routes.simple.type = "simple"
+routes.simple.module = m
+routes.simple.controller = c
+routes.simple.action = a
+
+routes.regex.type = "regex"
+routes.regex.match = "#^/login$#"
+routes.regex.route.controller = User
+routes.regex.route.action = login
+
+[product :common :routes]

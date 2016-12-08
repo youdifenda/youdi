@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>优迪财经直播</title>
+</head>
+<body class="whitebg">
+<div class="loginPage">
+    <div class="topTile">
+        <a href="#" class="return"></a>
+        <a href="login.html" class="fr">登录</a>
+        <p>用户注册</p>
+    </div>
+    <div class="cont">
+        <ul class="loginFrom">
+            <li>
+                <div class="formfile"><i class="icon1"></i> <input type="text" placeholder="用户名" name="" id="userName">
+                </div>
+            </li>
+            <li>
+                <div class="formfile"><i class="icon2"></i> <input type="password" placeholder="密码" name=""
+                                                                   id="password"></div>
+            </li>
+            <li>
+                <div class="formfile"><i class="icon2"></i> <input type="password" placeholder="确认密码" name=""
+                                                                   id="confirmPassword"></div>
+            </li>
+            <li class="ma">
+                <div class="formfile"><i class="icon3"></i> <input type="text" placeholder="验证码" name=""
+                                                                   id="verifyCode">
+                    <span><img src="/user/code" id="codeImg"/></span> <a href="#" onclick="change_regCode()">换一张</a>
+                </div>
+            </li>
+        </ul>
+        <div class="btn" ><a href="#" onclick="register()" id="register">注册</a></div>
+        <div class="otherlogin"><span></span><i>第三方登录</i></div>
+        <div class="otherloginDiv"><a href="javascript:;"></a></div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+<script>
+
+    function change_regCode() {
+        $("#codeImg").attr("src", "/user/code?code=" + Math.random());
+        return;
+    }
+
+    function register() {
+        var userName = $('#userName').val();
+        var password = $('#password').val();
+        var confirmPassword = $('#confirmPassword').val();
+        var code = $('#verifyCode').val();
+        if(userName=="" || password==""|| confirmPassword==""|| code==""){
+            alert("用户名，密码，验证码等必须都填写");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/user/register',
+            data: {
+                "userName": userName, "password": password
+                , "confirmPassword": confirmPassword, "code": code
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var res = data.code;
+                if(res == 0){
+                    window.location = '/apk/login.html';
+                    return false;
+                }
+                else{
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
+</body>
+</html>

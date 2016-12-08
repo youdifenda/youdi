@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="../build/flexible_css.debug.js"></script>
+    <script src="../build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="../css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <a href="#" class="txt" id="del">删除记录</a>
+    <p>我的消息</p>
+</div>
+
+<div class="dalist mynewslist">
+    <ul id="myul">
+        <!--<li>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>唐老师</h3>-->
+        <!--<div class="omitpram"><span><i></i>15分钟前</span>回答了您提出的问题：………………</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+
+        <!--<li>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="../images/peo3.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>系统提醒</h3>-->
+        <!--<div class="omitpram"><span><i></i>15分钟前</span>您已经成功充值100 U币</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+<div class="fixbottomBox fixBottomDel" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <p>确定要删除全部消息？</p>
+        <div class="btn"><a href="#" class="abtn" onclick="sure()">确定</a> <a href="#" class="abtn"
+                                                                             onclick="cancel()">取消</a></div>
+    </div>
+</div>
+
+<script src="../js/zepto.min.js"></script>
+<script src="../js/all.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#del').tap(function () {
+            setTimeout(function () {
+                animateshowHide($('.fixBottomDel .bg'));
+            }, 320);
+            return false;
+        })
+
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/user/message',
+            data: {},
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                if (code == 0) {
+                    var result = data.data;
+                    var length = result.length;
+                    for (var i = 0; i < length; i++) {
+                        var html = '';
+                        switch (result[i].type) {
+                                //提问题的消息
+                            case '1':
+                                html += '<li>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="../images/peo.png"/></a>';
+                                html += '<div class="des">';
+                                html += '<h3>' + result[i].userName + '</h3>';
+                                html += '<div class="omitpram"><span><i></i>' + result[i].time + '</span>向你提了问题的问题：………………</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                                //回答问题的消息
+                            case '2':
+                                html += '<li>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="../images/peo.png"/></a>';
+                                html += '<div class="des">';
+                                html += '<h3>' + result[i].userName + '</h3>';
+                                html += '<div class="omitpram"><span><i></i>' + result[i].time + '</span>回答了您的问题：………………</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                                //系统消息
+                            case '3':
+                                html += '<li>';
+                                html += '<div class="personInfo">';
+                                html += '<a href="#" class="img"><img src="../images/peo3.png"/></a>';
+                                html += '<div class="des">';
+                                html += '<h3>系统提醒</h3>';
+                                html += '<div class="omitpram"><span><i></i>' + result[i].time + '</span>' + result[i].content + '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</li>';
+                                break;
+                        }
+                        $('#myul').append(html);
+                    }
+                }
+                else {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    })
+
+    function sure() {
+        $.ajax({
+            type: 'POST',
+            url: '/user/deleteMessage',
+            data: {
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                if(code == 0){
+                    location.reload(true);
+                }
+                else{
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+        animateshowHide($('.fixBottomDel .bg'));
+    }
+    function cancel() {
+        animateshowHide($('.fixBottomDel .bg'));
+    }
+</script>
+</body>
+</html>
+

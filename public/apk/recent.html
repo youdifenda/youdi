@@ -1,0 +1,574 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <script src="js/zepto.min.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="/apk/user/userCenter.html" class="peo"></a>
+    <span class="name"><a href="#" class="on">最新</a> | <a href="#">最热</a></span>
+</div>
+
+<div class="dalist" id="wrapper">
+    <ul id="myul">
+        <!--<li id="first">-->
+        <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="images/peo.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>唐老师</h3>-->
+        <!--<p class="identity"><span><i></i>15分钟前</span>巅峰财富|策略分析师</p>-->
+        <!--<div class="status">-->
+        <!--<span class="play"><i></i>点击播放</span> 14 ''-->
+        <!--</div>-->
+        <!--<div class="act">-->
+        <!--<a href="#" class="icon_hear"><i></i>旁听2324</a>-->
+        <!--<a href="#" class="icon_share"><i></i>分享</a>-->
+        <!--<a href="#" class="icon_fav"><i></i>收藏</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+
+        <!--<li>-->
+        <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="images/peo.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>唐老师</h3>-->
+        <!--<p class="identity"><span><i></i>15分钟前</span>巅峰财富|策略分析师</p>-->
+        <!--<div class="status">-->
+        <!--<a href="javascript:;" class="vbtn viewbtn1">140U币点击查看</a>-->
+        <!--</div>-->
+        <!--<div class="act">-->
+        <!--<a href="#" class="icon_hear"><i></i>旁听2324</a>-->
+        <!--<a href="#" class="icon_share"><i></i>分享</a>-->
+        <!--<a href="#" class="icon_fav"><i></i>收藏</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+
+        <!--<li>-->
+        <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="images/peo.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>唐老师</h3>-->
+        <!--<p class="identity"><span><i></i>15分钟前</span>巅峰财富|策略分析师</p>-->
+        <!--<div class="status">-->
+        <!--<a href="javascript:;" class="vbtn viewbtn2">140U币点击查看</a>-->
+        <!--</div>-->
+        <!--<div class="act">-->
+        <!--<a href="#" class="icon_hear"><i></i>旁听2324</a>-->
+        <!--<a href="#" class="icon_share"><i></i>分享</a>-->
+        <!--<a href="#" class="icon_fav"><i></i>收藏</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+
+        <!--<li>-->
+        <!--<p class="pram">上证指数减肥税务局负责 等废弃物王妃王妃王妃务局负责 等废弃物王妃王妃王妃 务局负责 等废弃物王v妃王妃王妃 务局负责 等废</p>-->
+        <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="images/peo.png"/></a>-->
+        <!--<div class="des">-->
+        <!--<h3>唐老师</h3>-->
+        <!--<p class="identity"><span><i></i>15分钟前</span>巅峰财富|策略分析师</p>-->
+        <!--<div class="status">-->
+        <!--<a href="javascript:;" class="vbtn viewbtn3">140U币点击查看</a>-->
+        <!--</div>-->
+        <!--<div class="act">-->
+        <!--<a href="#" class="icon_hear"><i></i>旁听2324</a>-->
+        <!--<a href="#" class="icon_share"><i></i>分享</a>-->
+        <!--<a href="#" class="icon_fav"><i></i>收藏</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+<!-- 查看信息 -->
+<div class="fixbottomBox fixbottomInfo" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="personInfo">
+            <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a>
+            <div class="des">
+                <h3 id="infoName">唐老师</h3>
+                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <div class="showpic"><img src="images/temp.jpg" id="infoimg"/></div>
+                <p class="pram" id="infoContent">
+                    尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 登录 -->
+<div class="fixbottomBox fixbottomLogin" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="btn"><a href="login.html">登录</a> <a href="register.html">注册</a></div>
+        <h4>第三方登录</h4>
+        <div class="thirdLogin">
+            <a href="#" class="a1"><span></span>微博</a>
+            <a href="#" class="a2"><span></span>微信</a>
+            <a href="#" class="a3"><span></span>QQ</a>
+        </div>
+    </div>
+</div>
+
+<!-- 支付 -->
+<div class="fixbottomBox fixbottomPay" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <h4>使用u比支付</h4>
+        <p id="payContent">您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
+        <div class="btn"><a href="#" class="cfbtn" id="goPay">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
+    </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/recent.js">
+    //    $(function () {
+    //        add();
+    //    });
+    //    function add() {
+    //        $.ajax({
+    //            type: 'POST',
+    //            url: '/question/recent',
+    //            data: {},
+    //            dataType: 'JSON',
+    //            success: function (data) {
+    //                var result = $.parseJSON(data);
+    //                if (result.code == 0) {
+    //                    alert(result.message);
+    //
+    //                    var json = result.data;
+    //                    for (var i = 0; i < json.length; i++) {
+    //                        //问题状态，是否有权限听，多少钱能听
+    //                        //是否登录 1，登录。0未登录
+    //                        var tip = '';
+    //                        var action = '';
+    //                        //play： 已付钱可以播放
+    //                        //info：已付钱可以查看
+    //                        //out： 未登录
+    //                        //noPay：未付钱
+    //
+    //                        if (json[i].isLogin == 1) {
+    //                            //是否已经付钱
+    //                            // 1 已经付过钱了  0：还没付钱
+    //                            if (json[i].payment == 1) {
+    //                                //是文字还是录音
+    //                                //type:0 图文 ，1：录音
+    //                                if (json[i].type == 1) {
+    //                                    tip = '点击播放';
+    //                                    action = 'play';
+    //                                }
+    //                                else {
+    //                                    tip = '点击查看';
+    //                                    action = 'info';
+    //                                }
+    //                            }
+    //                            //未付钱
+    //                            else {
+    //                                action = 'noPay';
+    //                                if (json[i].type == 1) {
+    //                                    tip = json[i].listenprice + 'U币点击播放';
+    //                                }
+    //                                else {
+    //                                    tip = json[i].listenprice + 'U币点击查看';
+    //                                }
+    //                            }
+    //                        }
+    //                        //未登录
+    //                        else {
+    //                            if (json[i].type == 1) {
+    //                                tip = json[i].listenprice + 'U币点击播放';
+    //                            }
+    //                            else {
+    //                                tip = json[i].listenprice + 'U币点击查看';
+    //                            }
+    //                            action = 'out';
+    //                        }
+    //
+    //                        var html = "";
+    //
+    //                        if(action != 'play') {
+    //                            html += '<li>';
+    //                            html += '<span>';
+    //                            //问题内容
+    //                            html += '<p class="pram">' + json[i].questioncontent + '</p>';
+    //                            html += '<div class="personInfo">';
+    //                            //图片的点击效果
+    //                            html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].fileurl + '></a>';
+    //                            html += '<div class="des">';
+    //                            //用户名称
+    //                            html += '<h3>' + json[i].user_name + '</h3>';
+    //                            //时间   用户职位名称
+    //                            html += '<p class="identity"><span><i></i>' + json[i].time + '</span>' + json[i].user_name + '</p>';
+    //                            //问题状态，是否有权限听，多少钱能听
+    //                            html += '<div class="status">';
+    //                            html += '<a href="javascript:;" class="vbtn ' + action + ' " id = ' + json[i].id + '>' + tip + '</a>';
+    //                            html += '</div>';
+    //                            html += '<div class="act">';
+    //                            //旁听数
+    //                            html += '<a href="#" class="icon_hear"><i></i>' + '旁听' + json[i].listennum + '</a>';
+    //                            html += '<a href="#" class="icon_share"><i></i>分享</a>';
+    //                            html += '<a href="#" class="icon_fav" ><i></i>收藏</a>';
+    //                            html += '</div>';
+    //                            html += '</div>';
+    //                            html += '</div>';
+    //                            html += '</span>';
+    //                            html += '</li>';
+    //                        }
+    //                        else{
+    //                            html += '<li>';
+    //                            html += '<span>';
+    //                            html += '<p class="pram">' + json[i].questioncontent +'</p>';
+    //                            html += '<div class="personInfo">';
+    //                            html += '<a href="/apk/ask.html?id='+json[i].ut+'" class="img"><img src="'+json[i].fileurl+'"/></a>';
+    //                            html += '<div class="des">';
+    //                            //姓名
+    //                            html += '<h3>'+json[i].user_name+'</h3>';
+    //                            //时间  职位
+    //                            html += '<p class="identity"><span><i></i>'+json[i].time+'</span>'+json[i].user_name+'</p>';
+    //                            html += '<div class="status">';
+    //                            html += '<a href="javascript:;" class="vbtn play"><i></i>点击播放'+ 14+" ''"+'</a>';
+    //                            html += '</div>';
+    //                            html += '<div class="act">';
+    //                            html += '<a href="#" class="icon_hear"><i></i>'+'旁听'+json[i].listennum+'</a>'
+    //                            html += '<a href="#" class="icon_share"><i></i>分享</a>';
+    //                            html += '<a href="#" class="icon_fav" ><i></i>收藏</a>'
+    //                            html += '</div>';
+    //                            html += '</div>';
+    //                            html += '</div>';
+    //                            html += '</span>';
+    //                            html += '</li>';
+    //                        }
+    //                        $("#myul").append(html);
+    //                    }
+    //                } else {
+    //                    alert(result.message);
+    //                }
+    //            },
+    //            error: function (xhr, type) {
+    //                alert('Ajax error!')
+    //            }
+    //        })
+    //    }
+</script>
+<script src="js/all.js"></script>
+<script src="js/dropload.min.js"></script>
+<script type="text/javascript">
+    var page = 0 ;
+    $(function () {
+//        add();
+//        pager();
+    });
+    $(function () {
+        $('.dalist').on('click', '.personInfo .info', function () {
+            var answerId = this.id;
+            var ev = event || window.event;
+            console.log(ev.srcElement);
+            $.ajax({
+                type: 'POST',
+                url: '/question/detail',
+                data: {answerId: answerId},
+                dataType: 'json',
+                timeout: 1000,
+                success: function (data) {
+                    var json = data.data;
+                    for (var i = 0; i < json.length; i++) {
+                        $('#infoName').html(json[i].user_name);
+                        $('#infoTeam').html(json[i].user_name);
+                        $('#infoContent').html(json[i].content);
+                        $('#infohead').attr("src", json[i].fileurl);
+                        $('#infoimg').attr("src", json[i].fileurl);
+                    }
+                    //返回的数据为空的情况
+                    //后台做验证
+                    //此时可能是未付款，或者未登录
+                    if (json.length == 0) {
+                        //未登录
+                        if (data.message == '未登录') {
+                            animateshowHide($('.fixbottomLogin .bg'));
+                        }
+                        else if (data.message == '未付款') {
+                            animateshowHide($('.fixbottomPay .bg'));
+                        }
+                    }
+                    else {
+                        animateshowHide($('.fixbottomInfo .bg'));
+                    }
+                    return false;
+                },
+                error: function (xhr, type) {
+//                    alert('Ajax error!');
+                }
+            });
+            if (ev.stopPropagation)
+                ev.stopPropagation();
+            else
+                ev.cancelBubble = true;
+            return false;
+        });
+        $('.dalist').on('click', '.personInfo .out', function () {
+            animateshowHide($('.fixbottomLogin .bg'));
+            return false;
+        });
+
+        $('.dalist').on('click', '.personInfo .noPay', function () {
+            var id = '#' + this.id;
+            var answerId = this.id;
+            var html = $(id).html();
+            html = html.substr(0, html.length - 6);
+            var str = '您将支付' + html + '枚U币用于旁听该问题回答，请确认支付。';
+            $('#payContent').html(str);
+            $('#goPay').attr('onclick', 'pay(' + answerId + ')');
+            animateshowHide($('.fixbottomPay .bg'));
+            return false;
+        });
+        $('.dalist').on('click', '.personInfo .play', function () {
+            alert('play');
+            return false;
+        });
+        $('.dalist').on('click', '.myli', function () {
+            var ev = event || window.event;
+            var dom = ev.srcElement;
+            if (!$(dom).hasClass("vbtn") && !$(dom).hasClass("icon_fav") && $(dom)[0].localName != 'img') {
+                window.location.href = '/apk/questionDetail.html?answerId='+this.attributes.data.value;
+            }
+            return true;
+        });
+    });
+    //    $(function () {
+    ////        $('.personInfo .viewbtn1').tap(function () {
+    ////            setTimeout(function () {
+    ////                animateshowHide($('.fixbottomInfo .bg'));
+    ////            }, 320)
+    ////            return false;
+    ////        })
+    //
+    //        $('.dalist').on('click', '.personInfo .info', function () {
+    //            var answerId = this.id;
+    //            $.ajax({
+    //                type: 'POST',
+    //                url: '/question/detail',
+    //                data: {answerId: answerId},
+    //                dataType: 'json',
+    //                timeout: 1000,
+    //                success: function (data) {
+    //                    var json = data.data;
+    //                    for (var i = 0; i < json.length; i++) {
+    //                        $('#infoName').html(json[i].user_name);
+    //                        $('#infoTeam').html(json[i].user_name);
+    //                        $('#infoContent').html(json[i].content);
+    //                        $('#infohead').attr("src", json[i].fileurl);
+    //                        $('#infoimg').attr("src", json[i].fileurl);
+    //                    }
+    //                    //返回的数据为空的情况
+    //                    //后台做验证
+    //                    //此时可能是未付款，或者未登录
+    //                    if (json.length == 0) {
+    //                        //未登录
+    //                        if (data.message == '未登录') {
+    //                            animateshowHide($('.fixbottomLogin .bg'));
+    //                        }
+    //                        else if (data.message == '未付款') {
+    //                            animateshowHide($('.fixbottomPay .bg'));
+    //                        }
+    //                    }
+    //                    else {
+    //                        animateshowHide($('.fixbottomInfo .bg'));
+    //                    }
+    //                },
+    //                error: function (xhr, type) {
+    //                    alert('Ajax error!')
+    //                }
+    //            });
+    //            return false;
+    //        });
+    //        $('.dalist').on('click', '.personInfo .out', function () {
+    //            animateshowHide($('.fixbottomLogin .bg'));
+    //            return false;
+    //        });
+    //
+    //        $('.dalist').on('click', '.personInfo .noPay', function () {
+    //            animateshowHide($('.fixbottomPay .bg'));
+    //            return false;
+    //        });
+    //        $('.dalist').on('click', '.personInfo .play', function () {
+    //            alert('play');
+    //            return false;
+    //        })
+    //    })
+
+    $('.dalist').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            // alert('dropdown');
+
+            // alert(page);
+            // setTimeout(function(){
+            //     me.resetload();
+            // },2000);
+            $.ajax({
+                type: 'POST',
+                url: '/question/recent',
+                data: {page: page},
+                dataType: 'json',
+                success: function (data) {
+                    var result = data;
+                    if (result.code == 0) {
+//                        alert(result.message);
+
+                        var json = result.data;
+                        if(json.length != 0 ) {
+                            for (var i = 0; i < json.length; i++) {
+                                //问题状态，是否有权限听，多少钱能听
+                                //是否登录 1，登录。0未登录
+                                var tip = '';
+                                var action = '';
+                                //play： 已付钱可以播放
+                                //info：已付钱可以查看
+                                //out： 未登录
+                                //noPay：未付钱
+
+                                if (json[i].isLogin == 1) {
+                                    //是否已经付钱
+                                    // 1 已经付过钱了  0：还没付钱
+                                    if (json[i].payment == 1) {
+                                        //是文字还是录音
+                                        //type:0 图文 ，1：录音
+                                        if (json[i].type == 1) {
+                                            tip = '点击播放';
+                                            action = 'play';
+                                        }
+                                        else {
+                                            tip = '点击查看';
+                                            action = 'info';
+                                        }
+                                    }
+                                    //未付钱
+                                    else {
+                                        action = 'noPay';
+                                        if (json[i].type == 1) {
+                                            tip = json[i].listenprice + 'U币点击播放';
+                                        }
+                                        else {
+                                            tip = json[i].listenprice + 'U币点击查看';
+                                        }
+                                    }
+                                }
+                                //未登录
+                                else {
+                                    if (json[i].type == 1) {
+                                        tip = json[i].listenprice + 'U币点击播放';
+                                    }
+                                    else {
+                                        tip = json[i].listenprice + 'U币点击查看';
+                                    }
+                                    action = 'out';
+                                }
+
+                                var html = "";
+
+                                if (action != 'play') {
+                                    html += '<li data="' + json[i].id + '" class="myli">';
+                                    html += '<span>';
+                                    //问题内容
+                                    html += '<p class="pram">' + json[i].questioncontent + '</p>';
+                                    html += '<div class="personInfo">';
+                                    //图片的点击效果
+                                    html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].fileurl + '></a>';
+                                    html += '<div class="des">';
+                                    //用户名称
+                                    html += '<h3>' + json[i].user_name + '</h3>';
+                                    //时间   用户职位名称
+                                    html += '<p class="identity"><span><i></i>' + json[i].time + '</span>' + json[i].user_name + '</p>';
+                                    //问题状态，是否有权限听，多少钱能听
+                                    html += '<div class="status">';
+                                    html += '<a href="javascript:;" class="vbtn ' + action + ' " id = ' + json[i].id + '>' + tip + '</a>';
+                                    html += '</div>';
+                                    html += '<div class="act">';
+                                    //旁听数
+                                    html += '<a href="#" class="icon_hear"><i></i>' + '旁听' + json[i].listennum + '</a>';
+                                    html += '<a href="#" class="icon_share"><i></i>分享</a>';
+                                    html += '<a href="#" class="icon_fav" id="' + json[i].id + '" onclick="collect(' + json[i].id + ')" ><i></i>收藏</a>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</span>';
+                                    html += '</li>';
+                                }
+                                else {
+                                    html += '<li class="myli" data="' + json[i].id + '">';
+                                    html += '<span>';
+                                    html += '<p class="pram">' + json[i].questioncontent + '</p>';
+                                    html += '<div class="personInfo">';
+                                    html += '<a href="/apk/ask.html?id=' + json[i].ut + '" class="img"><img src="' + json[i].fileurl + '"/></a>';
+                                    html += '<div class="des">';
+                                    //姓名
+                                    html += '<h3>' + json[i].user_name + '</h3>';
+                                    //时间  职位
+                                    html += '<p class="identity"><span><i></i>' + json[i].time + '</span>' + json[i].user_name + '</p>';
+                                    html += '<div class="status">';
+                                    html += '<a href="javascript:;" class="vbtn play"><i></i>点击播放' + 14 + " ''" + '</a>';
+                                    html += '</div>';
+                                    html += '<div class="act">';
+                                    html += '<a href="#" class="icon_hear"><i></i>' + '旁听' + json[i].listennum + '</a>'
+                                    html += '<a href="#" class="icon_share"><i></i>分享</a>';
+                                    html += '<a href="#" class="icon_fav" id="' + json[i].id + '" onclick="collect(' + json[i].id + ')"><i></i>收藏</a>'
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</span>';
+                                    html += '</li>';
+                                }
+                                $("#myul").append(html);
+                            }
+                            page ++;
+                        }
+                        else{
+                            alert('没有更多数据了...');
+                            $("#wrapper div.dropload-down").empty();
+                            return false;
+                        }
+                    } else {
+                        alert(result.message);
+                    }
+                    // 为了测试，延迟1秒加载
+                    setTimeout(function () {
+                        $('.dalist .ul').append(result);
+                        // 每次数据加载完，必须重置
+                        me.resetload();
+                    }, 1000);
+
+                },
+                error: function (xhr, type) {
+                    // alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                    me.resetload();
+                }
+            });
+        }
+    });
+
+</script>
+
+</body>
+</html>

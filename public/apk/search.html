@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css" />
+    <title>分答</title>
+</head>
+<body class="whitebg">
+	<div class="search">
+		<div class="top">
+			  <a href="#" class="cancel">取消</a>
+			 <div class="box"><input type="text" name="" placeholder="大家都在搜" id="keyWord"><a href="#" class="searchKey"></a></div>
+		</div>
+		<div class="cont">
+			 <div class="slist">
+			 	<ul>
+					<li>
+						<h3><span class="hot"></span>热门搜索</h3>
+						<a class="des" href="#">
+							<p class="question">老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能...</p>
+							<p class="answer">回答者：唐老师 巅峰财富|策略分析师</p>
+						</a>
+					</li>
+					<li>
+						<h3><span class="history"></span>历史搜索</h3>
+						<a class="des" href="#">
+							<p class="question">老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能...</p>
+							<p class="answer">回答者：唐老师 巅峰财富|策略分析师</p>
+						</a>
+					</li>
+			 	</ul>
+			 </div>
+		</div>
+	</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+<script>
+//	function search() {
+//		var keyWord = $('#keyWord').value ;
+//		alert(keyWord);
+//	}
+	$('.search').on('click','.searchKey',function () {
+		var keyWord = $('#keyWord')[0].value ;
+
+		//请求数据，获得用户详情
+		$.ajax({
+			type: 'POST',
+			url: '/user/search',
+			data: {
+				"keyWord":keyWord
+			},
+			dataType: 'json',
+			timeout: 2000,
+			success: function (data) {
+				var code = data.code;
+				if(code == 0){
+					alert(data.data);
+				}
+				else{
+					alert(data.message);
+				}
+			},
+			error: function (xhr, type) {
+				alert('Ajax error!')
+			}
+		})
+	})
+</script>
+</body>
+</html>
+

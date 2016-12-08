@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css" />
+    <title>优迪财经直播</title>
+</head>
+<body class="whitebg">
+<div class="loginPage">
+    <div class="topTile">
+        <a href="javascript:history.back()" class="return"></a>
+        <a href="register.html" class="fr">注册</a>
+        <p>用户登录</p>
+    </div>
+    <div class="cont">
+        <ul class="loginFrom">
+            <li>
+                <div class="formfile"><i class="icon1"></i> <input type="text" placeholder="用户名" name="" id="userName"></div>
+            </li>
+            <li>
+                <div class="formfile"><i class="icon2"></i> <input type="password" placeholder="密码" name="" id="password"></div>
+            </li>
+            <li class="ma">
+                <div class="formfile"><i class="icon3"></i> <input type="text" placeholder="验证码" name="" id="code">
+                    <span><img src="/user/code" id="codeImg"/></span> <a href="#" onclick="change_regCode()">换一张</a>
+                </div>
+            </li>
+        </ul>
+        <div class="btn"><a href="#" onclick="login()" id="login">登录</a></div>
+        <div class="otherlogin"><span></span><i>第三方登录</i></div>
+        <div class="otherloginDiv"><a href="javascript:;"></a></div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+
+<script>
+    function change_regCode() {
+        $("#codeImg").attr("src", "/user/code?code=" + Math.random());
+        return false;
+    }
+
+    function login() {
+        var userName = $("#userName").val();
+        var password = $("#password").val();
+        var code = $('#code').val();
+        if (userName == "" || password=="" || code=="") {
+            alert("用户名，密码，验证码等必须都填写");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/user/login',
+            data: {"userName": userName, "password": password, "code": code},
+            dataType: 'JSON',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.code == 0) {
+                    window.location.href = '/apk/recent.html';
+                    return false;
+                } else {
+                    alert(result.message);
+                    return false;
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+                return false;
+            }
+        })
+    }
+</script>
+</body>
+</html>

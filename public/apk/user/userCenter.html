@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <script src="../build/flexible_css.debug.js"></script>
+    <script src="../build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="../css/mobile_da.css" />
+    <title>分答</title>
+</head>
+<body>
+   <div class="topTile">
+       <a href="javascript:history.back()" class="return"></a>
+       <p>个人中心</p>
+   </div>
+   <div class="mycenter">
+      <div class="userInfo">
+         <div class="img"><img src="../images/peo2.png" id="userImg"/></div>
+         <div class="des">
+           <p class="loginout">您还没有登录 <a href="#">点击登录</a></p>
+           <!-- 登录后 -->
+           <!-- <p class="p1">暖洋洋</p> --> 
+         </div>
+      </div>
+      <ul class="mylist">
+         <li>
+           <a href="#">
+             <span class="fr">充值 <i></i></span>
+             <em><img src="../images/myicon1.png"></em> 我的U币<b>10000</b>
+           </a>
+         </li>
+         <li>
+           <a href="#">
+             <span class="fr">兑换U豆 <i></i></span>
+              <em><img src="../images/myicon2.png"></em> 我的U豆<b>10000</b>
+           </a>
+         </li>
+          <li>
+              <a href="/apk/user/follow.html">
+                  <span class="fr"><i></i></span>
+                  <em><img src="../images/myicon3.png"></em> 关注
+              </a>
+          </li>
+         <li>
+           <a href="/apk/user/question.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon3.png"></em> 我问
+           </a>
+         </li>
+         <li>
+           <a href="/apk/user/listen.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon4.png"></em> 我听
+           </a>
+         </li>
+         <li>
+           <a href="/apk/user/response.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon5.png"></em> 我答
+           </a>
+         </li>
+      </ul>
+      <ul class="mylist">
+        <li>
+           <a href="/apk/user/collection.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon6.png"></em> 我的收藏
+           </a>
+         </li>
+      </ul>
+      <ul class="mylist">
+        <li>
+           <a href="/apk/user/information.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon7.png"></em> 消息提醒
+           </a>
+         </li>
+      </ul>
+      <ul class="mylist">
+        <li>
+           <a href="/apk/user/setting.html">
+             <span class="fr"><i></i></span>
+              <em><img src="../images/myicon8.png"></em> 设置
+           </a>
+         </li>
+      </ul>
+   </div>
+<script src="../js/zepto.min.js"></script>
+<script src="../js/all.js"></script>
+<script>
+    $(function () {
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/user/myInformation',
+            data: {
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                if(code == 0){
+                    alert('用户已经登录');
+                    $("#userImg").attr("src",data.imgs);
+                }
+                else{
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    })
+</script>
+</body>
+</html>
+

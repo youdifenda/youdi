@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="../js/zepto.min.js"></script>
+</head>
+<body>
+
+    UserName: <input type="text" name="userName" id="userName" value="heqiang"/><br/>
+    Password: <input type="text" name="password" id="password"/><br/>
+    <input type="button" value="Submit" onclick="register()"/>
+
+<script>
+    function register() {
+         var userName = $("#userName").val();
+         var password = $("#password").val();
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:9000/user/register',
+            data: {"userName": userName, "password": password},
+            dataType: 'JSON',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.code == 0) {
+                    alert(result.message);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <p>问题详情</p>
+</div>
+
+<div class="answerPage myAnswerView" id="detail">
+    <div class="question">
+        <div class="people">
+            <a href="#" class="img"><img src="images/peo.png" id="questionUserImg"></a>
+            <div class="pdes">
+                <h3 id="questionTop"><span class="price">￥99U豆</span>暖心多多</h3>
+                <!--  已过期 -->
+                <!-- <h3><span class="state">已过期</span>暖心多多</h3> -->
+                <p id="questionUserDes">还佛具房产纠纷 v 啊发 v 季卡积分擦分</p>
+            </div>
+        </div>
+        <div class="qsbox" id="questionContent">
+            <span class="wen"></span>老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能买的好的股票，我们怎么看股票的走势，老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能买的好的股票，我们怎么看股票的走势。
+        </div>
+        <p class="time" id="questionTime">一小时前</p>
+    </div>
+
+    <div class="personInfo">
+        <a href="#" class="img"><img src="images/peo.png" id="answerUserImg"/></a>
+        <div class="des">
+            <h3 id="answerUserName"><a href="#" class="share off"></a>唐老师</h3>
+            <p class="identity" id="answerUserDes">巅峰财富|策略分析师</p>
+            <p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
+                丁凤楚 男，汉</p>
+            <p class="identity ideTime"><span><i></i>15分钟前</span><b class="da"></b></p>
+            <div class="status" id="type">
+                <span class="play"><i></i>点击播放</span> 14 ''
+            </div>
+            <div class="act" id="act">
+                <a href="#" class="icon_hear"><i></i>旁听2324</a>
+                <a href="#" class="icon_share"><i></i>分享</a>
+                <a href="#" class="icon_fav" id="collect"><i></i>收藏</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 查看信息 -->
+<div class="fixbottomBox fixbottomInfo" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="personInfo">
+            <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a>
+            <div class="des">
+                <h3 id="infoName">唐老师</h3>
+                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <div class="showpic"><img src="images/temp.jpg" id="infoimg"/></div>
+                <p class="pram" id="infoContent">
+                    尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 登录 -->
+<div class="fixbottomBox fixbottomLogin" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <div class="btn"><a href="login.html">登录</a> <a href="register.html">注册</a></div>
+        <h4>第三方登录</h4>
+        <div class="thirdLogin">
+            <a href="#" class="a1"><span></span>微博</a>
+            <a href="#" class="a2"><span></span>微信</a>
+            <a href="#" class="a3"><span></span>QQ</a>
+        </div>
+    </div>
+</div>
+
+<!-- 支付 -->
+<div class="fixbottomBox fixbottomPay" style="display:none">
+    <div class="bg"></div>
+    <div class="cont">
+        <span class="closed"></span>
+        <h4>使用u比支付</h4>
+        <p id="payContent">您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
+        <div class="btn"><a href="#" class="cfbtn" id="goPay">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
+    </div>
+</div>
+
+
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+<script src="js/recent.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var answerId = getArgsFromHref('answerId');
+        $.ajax({
+            type: 'POST',
+            url: '/question/mDetail',
+            data: {answerId: answerId},
+            dataType: 'json',
+            timeout: 1000,
+            success: function (data) {
+                var code = data.code;
+                if (code == 0) {
+                    var result = data.data;
+                    var questionTop = '<span class="price">￥' + result.questionPrice + 'U豆</span>' + result.questionUserName;
+                    $('#questionUserImg').attr('src', result.questionUserImg);
+                    $('#questionTop').html(questionTop);
+                    $('#questionUserDes').html(result.questionUserName);
+                    var questionContent = '<span class="wen"></span>' + result.questionContent;
+                    $('#questionContent').html(questionContent);
+                    $('#questionTime').html(result.questionTime);
+
+                    $('#answerUserImg').attr('src', result.answerImg);
+                    var follow = '';
+                    if (result.follow == 1) {
+                        follow = 'on';
+                    }
+                    else {
+                        follow = 'off';
+                    }
+                    var answerUserName = '<a href="#" class="share ' + follow + '" onclick="follow(\'' + result.answerUT + '\')"></a>' + result.answerUserName;
+                    $('#answerUserName').html(answerUserName);
+                    $('#answerUserDes').html(result.answerUserName);
+                    //问题类型为0 图文
+                    if (result.answerType == 0) {
+                        var str =  '<a href="javascript:;" class="vbtn info " id = ' + result.answerId + '>查看内容</a>';
+                    }
+                    //问题类型为1  录音
+                    else {
+                        var str = '<a href="javascript:;" class="vbtn play " id = ' + result.answerId + '>点击播放</a>';
+                    }
+                    $('#type').html(str);
+
+                    var html = '';
+                    html += '<a href="#" class="icon_hear" id="listenNum"><i></i>旁听' + result.listenNum + '</a>';
+                    html += '<a href="#" class="icon_share"><i></i>分享</a>';
+                    html += '<a href="#" class="icon_fav" onclick="collect(\'' + result.answerId + '\')"><i></i>收藏</a>';
+                    $('#act').html(html);
+                }
+                else {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        });
+    });
+    //关注
+    function follow(userId) {
+        //请求数据，获得用户详情
+        var userId = userId.replace("#", "");
+        $.ajax({
+            type: 'POST',
+            url: '/user/follow',
+            data: {
+                "userId": userId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                var html = $('#answerUserName').html();
+                var end = html.indexOf('</a>');
+                html = html.substr(end + 4, html.length);
+                if (json == '关注成功') {
+                    var answerUserName = '<a href="#" class="share ' + 'on' + '" onclick="follow(\'' + userId + '\')"></a>' + html;
+                    $('#answerUserName').html(answerUserName);
+                }
+                else if (json == '取消关注') {
+                    var answerUserName = '<a href="#" class="share ' + 'off' + '" onclick="follow(\'' + userId + '\')"></a>' + html;
+                    $('#answerUserName').html(answerUserName);
+                }
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+
+    $(function () {
+        $('.personInfo').on('click', ' .info', function () {
+            var answerId = this.id;
+            var ev = event || window.event;
+            console.log(ev.srcElement);
+            $.ajax({
+                type: 'POST',
+                url: '/question/detail',
+                data: {answerId: answerId},
+                dataType: 'json',
+                timeout: 1000,
+                success: function (data) {
+                    var json = data.data;
+                    for (var i = 0; i < json.length; i++) {
+                        $('#infoName').html(json[i].user_name);
+                        $('#infoTeam').html(json[i].user_name);
+                        $('#infoContent').html(json[i].content);
+                        $('#infohead').attr("src", json[i].fileurl);
+                        $('#infoimg').attr("src", json[i].fileurl);
+                    }
+                    //返回的数据为空的情况
+                    //后台做验证
+                    //此时可能是未付款，或者未登录
+                    if (json.length == 0) {
+                        //未登录
+                        if (data.message == '未登录') {
+                            animateshowHide($('.fixbottomLogin .bg'));
+                        }
+                        else if (data.message == '未付款') {
+                            animateshowHide($('.fixbottomPay .bg'));
+                        }
+                    }
+                    else {
+                        animateshowHide($('.fixbottomInfo .bg'));
+                    }
+                    return false;
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                }
+            });
+            if (ev.stopPropagation)
+                ev.stopPropagation();
+            else
+                ev.cancelBubble = true;
+            return false;
+        });
+        $('.personInfo').on('click', ' .out', function () {
+            animateshowHide($('.fixbottomLogin .bg'));
+            return false;
+        });
+
+        $('.personInfo').on('click', ' .noPay', function () {
+            var id = '#' + this.id;
+            var answerId = this.id;
+            var html = $(id).html();
+            html = html.substr(0, html.length - 6);
+            var str = '您将支付' + html + '枚U币用于旁听该问题回答，请确认支付。';
+            $('#payContent').html(str);
+            $('#goPay').attr('onclick', 'pay(' + answerId + ')');
+            animateshowHide($('.fixbottomPay .bg'));
+            return false;
+        });
+        $('.personInfo').on('click', ' .play', function () {
+            alert('play');
+            return false;
+        })
+    });
+</script>
+</body>
+</html>
+

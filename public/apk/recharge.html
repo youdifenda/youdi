@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <a href="#" class="txt">详情</a>
+    <p>U币充值</p>
+</div>
+
+<div class="recharge">
+    <div class="reTop">
+        <div class="balance">余额 : <i>10</i> <span><img src="images/u.png"/></span></div>
+        <div class="priceForm">
+            <label>请输入金额</label>
+            <div class="pfile">
+                <input type="text" name="" id="recharge"> 元
+                <p>(提示：人民币和U币兑换比例为1:100)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="style">
+        <i></i> 微信
+    </div>
+
+    <div class="btnBox"><a href="#" onclick="recharge()">确认充值</a></div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+<script>
+    function recharge() {
+//        var basePrice = $("#basePrice").html();
+//        basePrice = basePrice.replace("U", "");
+//        var addPrice = $('#addPrice').val();
+        var amount = $('#recharge').val();
+        var platform = '0';
+        //生成订单
+        $.ajax({
+            type: 'POST',
+            url: '/pay/order',
+            data: {
+                "amount": amount,
+                "platform":platform
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="build/flexible_css.debug.js"></script>
+    <script src="build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <p>我的答</p>
+</div>
+
+<div class="answerPage">
+    <div class="question">
+        <div class="people">
+            <a href="#" class="img"><img src="images/peo.png" id="userImg"></a>
+            <div class="pdes">
+                <h3 id="userName"><span class="price" id="totalPrice">￥99U豆</span>暖心多多</h3>
+                <p id="userDesc">还佛具房产纠纷 v 啊发 v 季卡积分擦分</p>
+            </div>
+        </div>
+        <div class="qsbox" id="questionContent">
+            <span class="wen"></span>老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能买的好的股票，我们怎么看股票的走势，老师你的财经股票哪一股会涨价，大盘走势如何，怎么才能买的好的股票，我们怎么看股票的走势。
+        </div>
+    </div>
+
+    <div class="myAnswer">
+        <h3><span class="da"></span>我的回答</h3>
+        <div class="qstab"><a href="#" class="on" value="1">文字图片<span></span></a><a href="#" value="2">语音<span></span></a></div>
+        <div class="qstabcont">
+            <div class="icont">
+                <div class="txtAnswer">
+                    <textarea id="content"></textarea>
+                    <p class="num">0/100</p>
+                    <a href="#" class="addImg"></a>
+                    <div class="showimg">
+                        <!--  <p><img src="images/temp.jpg" /></p> -->
+                    </div>
+                </div>
+            </div>
+            <div class="icont" style="display:none">
+                <a href="#" class="audiobtn">开始录音</a>
+            </div>
+        </div>
+        <div class="btn center"><a href="#" class="abtn" onclick="submit()">提交</a></div>
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/all.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $('.myAnswer .qstab a').tap(function () {
+            $(this).siblings('a').removeClass('on');
+            $(this).addClass('on');
+            $('.qstabcont .icont').hide().eq($(this).index()).show();
+            return false;
+        });
+        var id = getArgsFromHref('id');
+        id = id.replace('#','');
+
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/question/show',
+            data: {
+                "id": id
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.data;
+                var str = '<span class="price" id="totalPrice">￥ ' + json.totalprice +'U豆</span>'+json.user_name;
+                $('#userName').html(str);
+                $('#userDesc').html(json.user_name);
+//                $('#totalPrice').html('￥'+json.totalprice +'U豆');
+                $('#questionContent').html(json.content);
+                $('#userImg').attr("src", json.imgs);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+
+    });
+
+
+    function submit() {
+
+        //提交答案 需要知道回答类型
+        var questionId = getArgsFromHref('id');
+        questionId = questionId.replace('#','');
+//        alert($('.myanswer.qstab.on').attr('value',''));
+        var test = getByClass('on');
+        test = test[0].innerText;
+        var type = 1;
+        if(test == '文字图片') type = 0;
+        else if(test == '语音') type = 1;
+        var content = $('#content')[0].value ;
+        if(content == '' || content == null){
+            alert('内容不能为空');
+        }
+
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/question/submitAnswer',
+            data: {
+                "questionId": questionId,
+                "type" : type,
+                "content":content
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                alert(json);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+    function getByClass(sClass){
+        var aResult=[];
+        var aEle=document.getElementsByTagName('*');
+        for(var i=0;i<aEle.length;i++){
+            /*当className相等时添加到数组中*/
+            if(aEle[i].className==sClass){
+                aResult.push(aEle[i]);
+            }
+        }
+        return aResult;
+    }
+
+
+</script>
+</body>
+</html>
+

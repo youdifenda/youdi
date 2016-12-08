@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <script src="../build/flexible_css.debug.js"></script>
+    <script src="../build/flexible.debug.js"></script>
+    <link rel="stylesheet" href="../css/mobile_da.css"/>
+    <title>分答</title>
+</head>
+<body>
+<div class="topTile">
+    <a href="javascript:history.back()" class="return"></a>
+    <p>我的关注</p>
+</div>
+
+<div class="questionPage" id="main">
+    <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+        <!--<div class="des">-->
+            <!--<h3><a href="#" class="share on"></a>唐老师</h3>-->
+            <!--<p class="identity">巅峰财富|策略分析师</p>-->
+            <!--<p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[-->
+                <!--丁凤楚 男，汉</p>-->
+            <!--<div class="act act2">-->
+                <!--<a href="#">答复11122</a>-->
+                <!--<a href="#">粉丝11112</a>-->
+                <!--<a href="#">财富11112</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+        <!--<div class="des">-->
+            <!--<h3><a href="#" class="share on"></a>唐老师</h3>-->
+            <!--<p class="identity">巅峰财富|策略分析师</p>-->
+            <!--<p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[-->
+                <!--丁凤楚 男，汉</p>-->
+            <!--<div class="act act2">-->
+                <!--<a href="#">答复11122</a>-->
+                <!--<a href="#">粉丝11112</a>-->
+                <!--<a href="#">财富11112</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="personInfo">-->
+        <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
+        <!--<div class="des">-->
+            <!--<h3><a href="#" class="share on"></a>唐老师</h3>-->
+            <!--<p class="identity">巅峰财富|策略分析师</p>-->
+            <!--<p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[-->
+                <!--丁凤楚 男，汉</p>-->
+            <!--<div class="act act2">-->
+                <!--<a href="#">答复11122</a>-->
+                <!--<a href="#">粉丝11112</a>-->
+                <!--<a href="#">财富11112</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</div>
+<script src="../js/zepto.min.js"></script>
+<script src="../js/all.js"></script>
+
+<script>
+    //查看我的关注
+    $(function () {
+        //请求数据，获得用户详情
+        $.ajax({
+            type: 'POST',
+            url: '/user/followList',
+            data: {},
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var code = data.code;
+                if (code == 0) {
+                    var result = data.data;
+                    var length = result.length;
+                    for (var i = 0; i < length; i++) {
+                        var html = '';
+                        html += '<div class="personInfo">';
+                        html += '<a href="#" class="img"><img src="../images/peo.png" /></a>';
+                        html += '<div class="des">';
+                        html += '<h3 onclick="follow(\''+result[i].followut+'\')"><a href="#" class="share on"></a>'+result[i].userName+'</h3>';
+                        html += '<p class="identity">巅峰财富|策略分析师</p>';
+                        html += '<p class="pram">hu@mail.shufe.edu.cn 个人网站：点击进入[ 丁凤楚 男，汉</p>';
+                        html += '<div class="act act2">';
+                        html += '<a href="#">答复'+result[i].answerNum+'</a>';
+                        html += '<a href="#">粉丝'+result[i].fansNum+'</a>';
+                        html += '<a href="#">财富11112</a>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        $('#main').append(html);
+                    }
+                }
+                else {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    })
+
+    //关注
+    function follow(userId) {
+        //请求数据，获得用户详情
+        var userId=userId.replace("#","");
+        $.ajax({
+            type: 'POST',
+            url: '/user/follow',
+            data: {
+                "userId": userId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var json = data.message;
+                var code = data.code;
+                alert(data.message);
+                window.location.reload();
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
+</body>
+</html>
+
