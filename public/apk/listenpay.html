@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>支付</title>
+</head>
+<body>
+	<!-- <form action="http://www.youdi.com/index/pay/payOk" method="post"> -->
+	<!-- 金额<input type="text"  name="pic"></input> -->
+	<!-- 详情<input type="text" name="content"></input> -->
+	<input type="button" value="支付" onclick="pay()" ></input>
+
+
+	<!-- </form> -->
+   <!--  <a href="weixin://wxpay/bizpayurl?appid=wx90f65cb2256662ea&noncestr=fMslDfe7bb0C2JPz&productid=1612091522000034&sign=8b0c4e7c09338430673369028bdb54db7d59fa8d×tamp=1481268154">微信</a> -->
+</body>
+
+<script src="js/zepto.min.js"></script>
+<script src="js/recent.js"></script>
+<script src="js/all.js"></script>
+<script type="text/javascript">
+
+    //支付测试
+    function pay() {   
+            var answerId = getArgsFromHref('answerId');
+            // answerId = answerId.replace("#", "");
+            var questionId = getArgsFromHref('questionId');
+            // questionId = questionId.replace("#", "");
+            // alert(questionId);
+            // alert(answerId);
+            //测试
+            $.ajax({
+                type: 'POST',
+                url: '/pay/listenpayOk',
+                data: {
+                    "questionId": questionId,
+                    "answerId" : answerId
+                },
+                dataType: 'json',
+                timeout: 2000,
+                success: function (data) {
+                    // var data= JSON.parse(data);
+                    if(data.code == 0){
+                        top.location.href="http://"+data.data;
+                    }else{
+                        // window.history.back(-1);
+                    }
+
+                    // alert(url);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            })
+            
+    }
+    //接收后台传过来的数据成功或失败
+    
+</script>
+</html>

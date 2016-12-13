@@ -24,4 +24,18 @@ class IndexController extends Yaf_Controller_Abstract {
         echo 'this is Index Module showAction <br>';
         return false;
     }
+    //支付测试
+    public function ceshiAction(){
+        echo 'this is Index Module ceshiAction <br>';
+
+    }
+    public function zfcgAction(){
+        $json = UserController::baseJson();
+        $json['code'] = 0;
+        $json['message'] = 'success';
+        $json['data'] = 0;
+        $json = json_encode($json);
+        echo  $json;
+        return false;
+    }
 }

@@ -73,6 +73,7 @@
             success: function (data) {
                 var res = data.code;
                 if(res == 0){
+                    alert(data.message);
                     window.location = '/apk/login.html';
                     return false;
                 }

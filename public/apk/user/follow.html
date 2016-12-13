@@ -17,20 +17,20 @@
 </div>
 
 <div class="questionPage" id="main">
-    <!--<div class="personInfo">-->
-        <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
-        <!--<div class="des">-->
-            <!--<h3><a href="#" class="share on"></a>唐老师</h3>-->
-            <!--<p class="identity">巅峰财富|策略分析师</p>-->
-            <!--<p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[-->
-                <!--丁凤楚 男，汉</p>-->
-            <!--<div class="act act2">-->
-                <!--<a href="#">答复11122</a>-->
-                <!--<a href="#">粉丝11112</a>-->
-                <!--<a href="#">财富11112</a>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <!-- <div class="personInfo">
+        <a href="#" class="img"><img src="../images/peo.png"/></a>
+        <div class="des">
+            <h3><a href="#" class="share on"></a>唐老师</h3>
+            <p class="identity">巅峰财富|策略分析师</p>
+            <p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
+                丁凤楚 男，汉</p>
+            <div class="act act2">
+                <a href="#">答复11122</a>
+                <a href="#">粉丝11112</a>
+                <a href="#">财富11112</a>
+            </div>
+        </div>
+    </div> -->
 
     <!--<div class="personInfo">-->
         <!--<a href="#" class="img"><img src="../images/peo.png"/></a>-->
@@ -78,13 +78,15 @@
             timeout: 2000,
             success: function (data) {
                 var code = data.code;
+                // alert(code);
                 if (code == 0) {
                     var result = data.data;
                     var length = result.length;
+                    // alert(length);
                     for (var i = 0; i < length; i++) {
                         var html = '';
                         html += '<div class="personInfo">';
-                        html += '<a href="#" class="img"><img src="../images/peo.png" /></a>';
+                        html += '<a href="#" onclick="ask(\''+result[i].followut+'\')" class="img"><img src="../images/peo.png" /></a>';
                         html += '<div class="des">';
                         html += '<h3 onclick="follow(\''+result[i].followut+'\')"><a href="#" class="share on"></a>'+result[i].userName+'</h3>';
                         html += '<p class="identity">巅峰财富|策略分析师</p>';
@@ -96,6 +98,7 @@
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';
+                        // alert(html);
                         $('#main').append(html);
                     }
                 }
@@ -113,6 +116,7 @@
     function follow(userId) {
         //请求数据，获得用户详情
         var userId=userId.replace("#","");
+        // alert(userId);die();
         $.ajax({
             type: 'POST',
             url: '/user/follow',
@@ -131,6 +135,11 @@
                 alert('Ajax error!')
             }
         })
+    }
+    //跳转问题页
+    function ask(userId) {
+        var userId=userId.replace("#","");
+        window.location.href="../ask.html?id="+userId;
     }
 </script>
 </body>

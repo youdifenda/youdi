@@ -59,11 +59,13 @@ class  UserController extends Yaf_Controller_Abstract
             $table = 'user';
             $sql = 'user_name = ? AND password = ?';
             $result = $dbHelp->findOne($table, $sql, $value);
+            // file_put_contents('d:./a.txt',$result);//打印出来result
 
             //登录成功
             if (sizeof($result) > 0) {
                 $properties = $result->getProperties();
                 $ut = $properties['ut'];
+                // file_put_contents('d:./a.txt',$ut);
                 //第二次进入
                 if (Yaf_Session::getInstance()->has('ut')) {
                     $Id = Yaf_Session::getInstance()->get('ut');
@@ -117,56 +119,91 @@ class  UserController extends Yaf_Controller_Abstract
 //        $arr['session_code'] = self::getSession('code');
 //        echo json_encode($arr);
 //        exit;
-
+//        
         //验证码正确
         if (strtolower(self::getSession('code')) == strtolower($code)) {
-            //密码一致
-            if ($password == $confirmPassword) {
-                $password = $this->generatorPassword($password);
-                $dbHelp = DbHelp::getInstance();
-                $value = array($userName, $password);
-                $table = 'user';
-                $sql = ' user_name = ? AND password = ?';
-                $users = $dbHelp->findOne($table, $sql, $value);
-                if (sizeof($users) > 0) {
+            //正则验证用户名格式
+            $pattern='/^[\w\_]{6,15}$/u';
+            if(!preg_match($pattern,$userName)) {
+                 $result = self::baseJson();
+                        $result['code'] = -1;
+                        $result['message'] = '用户名格式不正确';
+                        $result['data'] = array();
+                        echo json_encode($result);
+                        return false;
+            }
+            else {
+                //密码验证
+                        /**
+                         * $pattern：正则验证;
+                         * Created by PhpStorm.
+                         * user: zh
+                         * Date: 2016/12/8
+                         * Time: 16:08
+                         */
+                $pattern='/^[\w\_]{6,15}$/u';
+                if(!preg_match($pattern,$password)) {
                     $result = self::baseJson();
                     $result['code'] = -1;
-                    $result['message'] = '用户注册失败，已经有用户名';
+                    $result['message'] = '密码格式不正确';
                     $result['data'] = array();
                     echo json_encode($result);
                     return false;
                 } else {
-                    $ut = $this->generateExternalId(8);
-                    $table = 'user';
-                    $user = $dbHelp->dispense($table);
-                    $user->ut = $ut;
-                    $user->userName = $userName;
-                    $user->password = $password;
-                    $val = $dbHelp->store($user);
 
-                    if ($val != 0) {
-                        $result = self::baseJson();
-                        $result['code'] = 0;
-                        $result['message'] = '用户注册成功';
-                        $result['data'] = array();
-                        echo json_encode($result);
-                        return false;
-                    } else {
-                        $result = self::baseJson();
-                        $result['code'] = -1;
-                        $result['message'] = '用户注册失败';
-                        $result['data'] = array();
-                        echo json_encode($result);
+                //密码一致
+                    if ($password == $confirmPassword) {
+                        $password = $this->generatorPassword($password);
+                        $dbHelp = DbHelp::getInstance();
+                        $value = array($userName, $password);
+                        $table = 'user';
+                        $sql = ' user_name = ? AND password = ?';
+                        $users = $dbHelp->findOne($table, $sql, $value);
+                        // file_put_contents('D:/a.txt',$users);
+                        
+                        
+                            if (sizeof($users) > 0) {
+                                $result = self::baseJson();
+                                $result['code'] = -1;
+                                $result['message'] = '用户注册失败，已经有用户名';
+                                $result['data'] = array();
+                                echo json_encode($result);
+                                return false;
+                            } else {
+                                $ut = $this->generateExternalId(8);
+                                $table = 'user';
+                                $user = $dbHelp->dispense($table);
+                                $user->ut = $ut;
+                                $user->userName = $userName;
+                                $user->password = $password;
+                                $val = $dbHelp->store($user);
+
+                                if ($val != 0) {
+                                    $result = self::baseJson();
+                                    $result['code'] = 0;
+                                    $result['message'] = '用户注册成功';
+                                    $result['data'] = array();
+                                    echo json_encode($result);
+                                    return false;
+                                } else {
+                                    $result = self::baseJson();
+                                    $result['code'] = -1;
+                                    $result['message'] = '用户注册失败';
+                                    $result['data'] = array();
+                                    echo json_encode($result);
+                                    return false;
+                                }
+                            }
+                        
+                    } //两次密码不一致
+                    else {
+                        $json = self::baseJson();
+                        $json['code'] = -1;
+                        $json['message'] = '两次密码输入不一致';
+                        echo json_encode($json);
                         return false;
                     }
-                }
-            } //两次密码不一致
-            else {
-                $json = self::baseJson();
-                $json['code'] = -1;
-                $json['message'] = '两次密码输入不一致';
-                echo json_encode($json);
-                return false;
+                }    
             }
         } //验证码不正确
         else {
@@ -333,6 +370,7 @@ class  UserController extends Yaf_Controller_Abstract
             $json['message'] = 'success';
             $json['data'] = $result;
             $json = json_encode($json);
+            file_put_contents('d:a.txt',$json);
             echo $json;
             return false;
         }
@@ -559,7 +597,7 @@ class  UserController extends Yaf_Controller_Abstract
         }
     }
 
-    //关注
+    //关注 
     public function followAction()
     {
         $request = $this->getRequest();
@@ -593,7 +631,7 @@ class  UserController extends Yaf_Controller_Abstract
 
             //取消关注
             if (!empty($follow)) {
-                $dbHelp->trash($follow);
+                $dbHelp->trash($follow);       
                 $json = self::baseJson();
                 $json['code'] = 0;
                 $json['message'] = '取消关注';
@@ -646,6 +684,7 @@ class  UserController extends Yaf_Controller_Abstract
             $sql = 'ut = ?';
             $value = array($ut);
             $follow = $dbHelp->findAll($table, $sql, $value);
+            // file_put_contents('D:a.txt',$follow);
             $result = array();
             $i = 0;
             if (sizeof($follow) != 0) {
@@ -659,7 +698,7 @@ class  UserController extends Yaf_Controller_Abstract
                     $user = $dbHelp->findOne($table, $sql, $value);
                     $user = $user->getProperties();
                     $result[$i]['userName'] = $user['user_name'];
-                    $result[$i]['userImg'] = $user['imgs'];
+                    // $result[$i]['userImg'] = $user['imgs'];
                     $result[$i]['followut'] = $user['ut'];
 
                     //查答案表。获取答复数
@@ -683,6 +722,7 @@ class  UserController extends Yaf_Controller_Abstract
                 $json['message'] = 'success';
                 $json['data'] = $result;
                 $json = json_encode($json);
+                // file_put_contents('D:b.txt',$json);
                 echo $json;
                 return false;
             } else {
@@ -740,7 +780,7 @@ class  UserController extends Yaf_Controller_Abstract
     public function getList($page, $table, $ut)
     {
         $dbHelp = DbHelp::getInstance();
-        $sql = 'ut = ? LIMIT ?,?';
+        $sql = 'ut = ? ORDER BY createtime desc  LIMIT ?,?';
         $value = array($ut, ($page) * 10, ($page + 1) * 10);
         $array = $dbHelp->findAll($table, $sql, $value);
 
@@ -952,6 +992,7 @@ class  UserController extends Yaf_Controller_Abstract
     {
 //        $ut = $this->isLogin();
         $userId = $this->getRequest()->getPost('ut');
+        // file_put_contents('d:./d.txt',$userId);
 //        if ($ut == -1) {
 //            echo '用户未登录<br>';
 //            return false;
@@ -962,7 +1003,9 @@ class  UserController extends Yaf_Controller_Abstract
         $value = array($userId);
         $table = 'user';
         $user = $dbHelp->findOne($table, $sql, $value);
+        // var_dump($user);exit;
         $user = $user->getProperties();
+        // file_put_contents('d:d.txt',$user);
 
         //获得答复数
         $table = 'answer';
@@ -992,6 +1035,7 @@ class  UserController extends Yaf_Controller_Abstract
         $json['message'] = 'success';
         $json['data'] = $user;
         $json = json_encode($json);
+        // file_put_contents('d:./d.txt',$json);
         echo $json;
         return false;
 //        }
@@ -1025,6 +1069,7 @@ class  UserController extends Yaf_Controller_Abstract
                 $json['message'] = 'success';
                 $json['data'] = $user;
                 $json = json_encode($json);
+                file_put_contents('d:a.txt',$json);
                 echo $json;
                 return false;
             } //没有数据
@@ -1119,11 +1164,28 @@ class  UserController extends Yaf_Controller_Abstract
         $request = $this->getRequest();
         $basePrice = $request->getPost('basePrice');
         $addPrice = $request->getPost('addPrice');
+        $content = $request->getPost('content');
+        $answerut = $request->getPost('answerut');
         $table = 'user';
         $sql = 'ut = ?';
         $value = array($ut);
         $user = $dbHelp->findOne($table, $sql, $value);
         $amount = $basePrice + $addPrice;
+
+        $session=Yaf_Session::getInstance();
+        //"basePrice": basePrice, "addPrice": addPrice
+        //, "content": content, "answerut": answerut
+        //将总价 问题  答题人  存入SESSION；
+        $session->set("basePrice", $basePrice);
+        $session->set("addPrice", $addPrice);
+        $session->set("amount", $amount);
+        $session->set("content", $content);
+        $session->set("answerut", $answerut);
+        //取出SESSION;
+        $a=$session->get('answerut');
+        file_put_contents("d:a.txt",$a);
+
+
         if (empty($user)) {
             $json = UserController::baseJson();
             $json['code'] = -1;

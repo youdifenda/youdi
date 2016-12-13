@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="button" value="支付成功" onclick="payjieguo()"></input>
+    <input type="button" value="偷听支付成功" onclick="listenpayjieguo()"></input>
+</body>
+<script src="js/zepto.min.js"></script>
+<script src="js/recent.js"></script>
+<script src="js/all.js"></script>
+<script type="text/javascript">
+	function payjieguo(){
+        //支付成功
+        $.ajax({
+                type: 'POST',
+                url: '/index/zfcg',
+                data: {"code": 0
+                },
+                dataType: 'json',
+                timeout: 2000,
+                success: function (data) {
+                    // var data= JSON.parse(data);
+                    if(data.code == 0){
+                        window.location.href="../index/pay/payjieguo";
+                    }else{
+                        window.history.back(-1);
+                    }
+
+                    // alert(url);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            })
+        //支付失败
+    }
+    function listenpayjieguo(){
+        //支付成功
+        $.ajax({
+                type: 'POST',
+                url: '/index/zfcg',
+                data: {"code": 0
+                },
+                dataType: 'json',
+                timeout: 2000,
+                success: function (data) {
+                    // var data= JSON.parse(data);
+                    if(data.code == 0){
+                        window.location.href="../index/pay/listenpayjieguo";
+                    }else{
+                        window.history.back(-1);
+                    }
+
+                    // alert(url);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            })
+        //支付失败
+    }
+</script>
+</html>

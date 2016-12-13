@@ -14,7 +14,7 @@
 <body>
 <div class="topTile">
     <a href="/apk/user/userCenter.html" class="peo"></a>
-    <span class="name"><a href="#" class="on">最新</a> | <a href="#">最热</a></span>
+    <span class="name"><a href="#" class="on">最新</a> | <a href="#" class="hot">最热</a></span>
 </div>
 
 <div class="dalist" id="wrapper">
@@ -137,7 +137,7 @@
         <span class="closed"></span>
         <h4>使用u比支付</h4>
         <p id="payContent">您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
-        <div class="btn"><a href="#" class="cfbtn" id="goPay">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
+        <div class="btn"><a href="#" class="cfbtn" id="goPay" >确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
     </div>
 </div>
 
@@ -338,7 +338,7 @@
             html = html.substr(0, html.length - 6);
             var str = '您将支付' + html + '枚U币用于旁听该问题回答，请确认支付。';
             $('#payContent').html(str);
-            $('#goPay').attr('onclick', 'pay(' + answerId + ')');
+            $('#goPay').attr('onclick', 'paylisten(' + answerId + ')');
             animateshowHide($('.fixbottomPay .bg'));
             return false;
         });
@@ -434,7 +434,7 @@
                 success: function (data) {
                     var result = data;
                     if (result.code == 0) {
-//                        alert(result.message);
+                    //alert(result.message);
 
                         var json = result.data;
                         if(json.length != 0 ) {
@@ -567,7 +567,29 @@
             });
         }
     });
+    
+    //旁听支付调用
+    function paylisten(answerId) {
+        //得到问题数据
+        $.ajax({
+            type: 'POST',
+            url: '/question/simpleDetail',
+            data: {
+                "answerId": answerId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var questionId=data.data.questionid;
+                window.location.href="listenpay.html?answerId="+answerId+"&questionId="+questionId
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
 
+        
+    }
 </script>
 
 </body>

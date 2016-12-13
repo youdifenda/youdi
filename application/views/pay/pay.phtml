@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>支付</title>
+</head>
+<body>
+	<!-- <form action="payOk" method="post"> -->
+	<!-- 金额<input type="text"  name="pic"></input> -->
+	<!-- 详情<input type="text" name="content"></input> -->
+	<input type="button" value="支付" onclick="pay()" ></input>
+	<!-- </form> -->
+</body>
+
+<script src="js/zepto.min.js"></script>
+<script src="js/recent.js"></script>
+<script src="js/all.js"></script>
+<script type="text/javascript">
+	
+
+	function pay() {
+		alert(1);die();
+        //请求数据
+        $.ajax({
+            type: 'POST',
+            url:'http://192.168.56.1:8080/payment/create/wx/payurl',
+            data: {
+                "systemId": "02",
+			    "channelId": "01",
+			    "productDesc": "讲座",
+			    "productFee": "0.1",
+			    "spbillCreateIp": "1.1.1.1"
+
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {  
+                alert(data);
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        })
+    }
+</script>
+</html>

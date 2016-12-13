@@ -107,7 +107,7 @@
 </div>
 
 <!-- 支付 -->
-<div class="fixbottomBox fixbottomPay" style="display:none">
+<!-- <div class="fixbottomBox fixbottomPay" style="display:none">
     <div class="bg"></div>
     <div class="cont">
         <span class="closed"></span>
@@ -115,7 +115,7 @@
         <p>您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
         <div class="btn"><a href="#" class="cfbtn">确认</a><a href="#">取消</a></div>
     </div>
-</div>
+</div> -->
 <script src="../js/zepto.min.js"></script>
 <script src="../js/all.js"></script>
 <script src="../js/common.js"></script>
@@ -194,7 +194,7 @@
 
                         //是否已经付钱
                         // 1 已经付过钱了  0：还没付钱
-                        if (json[i].payment == 1) {
+                        // if (json[i].payment == 1) {
                             //是文字还是录音
                             //type:0 图文 ，1：录音
                             if (json[i].type == 1) {
@@ -205,17 +205,17 @@
                                 tip = '点击查看';
                                 action = 'info';
                             }
-                        }
+                        // }
                         //未付钱
-                        else {
-                            action = 'noPay';
-                            if (json[i].type == 1) {
-                                tip = json[i].listenprice + 'U币点击播放';
-                            }
-                            else {
-                                tip = json[i].listenprice + 'U币点击查看';
-                            }
-                        }
+                        // else {
+                        //     action = 'noPay';
+                        //     if (json[i].type == 1) {
+                        //         tip = json[i].listenprice + 'U币点击播放';
+                        //     }
+                        //     else {
+                        //         tip = json[i].listenprice + 'U币点击查看';
+                        //     }
+                        // }
                         var html = "";
                         if (action != 'play') {
                             html += '<li>';

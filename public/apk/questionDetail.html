@@ -94,7 +94,7 @@
         <span class="closed"></span>
         <h4>使用u比支付</h4>
         <p id="payContent">您将支付N枚U币用于旁听该问题回答，请确认支付。</p>
-        <div class="btn"><a href="#" class="cfbtn" id="goPay">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
+        <div class="btn"><a href="#" class="cfbtn" id="goPay" onclick="paylisten()">确认</a><a href="#" onclick="cancelAnimate()">取消</a></div>
     </div>
 </div>
 
@@ -261,6 +261,33 @@
             return false;
         })
     });
+
+    //旁听支付
+    function paylisten() {
+        var answerId = getArgsFromHref('answerId');
+        answerId=answerId.replace("#","");
+        // alert(answerId);
+        //得到问题数据
+        $.ajax({
+            type: 'POST',
+            url: '/question/simpleDetail',
+            data: {
+                "answerId": answerId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var questionId=data.data.questionid;
+                window.location.href="listenpay.html?answerId="+answerId+"&questionId="+questionId
+                // var code = data.code;
+                // if(code == 0){
+                // }
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+    }
 </script>
 </body>
 </html>

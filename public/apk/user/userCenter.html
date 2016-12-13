@@ -19,9 +19,9 @@
       <div class="userInfo">
          <div class="img"><img src="../images/peo2.png" id="userImg"/></div>
          <div class="des">
-           <p class="loginout">您还没有登录 <a href="#">点击登录</a></p>
+           <!-- <p class="loginout">您还没有登录 <a href="#">点击登录</a></p> -->
            <!-- 登录后 -->
-           <!-- <p class="p1">暖洋洋</p> --> 
+           <p class="p1"></p>
          </div>
       </div>
       <ul class="mylist">
@@ -102,8 +102,9 @@
             success: function (data) {
                 var code = data.code;
                 if(code == 0){
-                    alert('用户已经登录');
+                    // alert('用户已经登录');
                     $("#userImg").attr("src",data.imgs);
+                    $(".p1").html(data.data['user_name']);
                 }
                 else{
                     alert(data.message);

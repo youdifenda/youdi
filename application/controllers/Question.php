@@ -22,17 +22,17 @@ class QuestionController extends Yaf_Controller_Abstract
 
         $request = $this->getRequest();
         $type = $request->getPost('type');
-        $content = $request->getPost('content', "");
-        $basePrice = $request->getPost('basePrice', "0");
-        $addPrice = $request->getPost('addPrice', "0");
+        $content = $request->getPost('content', "");//提问内容
+        $basePrice = $request->getPost('basePrice', "0");//获取提问价格
+        $addPrice = $request->getPost('addPrice', "0");//追加价格
 //        $listenPrice = $request->getPost('listenPrice');
-        $listenPrice = 1;
-        $answerut = $request->getPost('answerut');
-        $totalPrice = $basePrice + $addPrice;
-        date_default_timezone_set('PRC');
+        $listenPrice = 1;//听一次价格
+        $answerut = $request->getPost('answerut');//获取回答问题的人
+        $totalPrice = $basePrice + $addPrice;//获的总价
+        date_default_timezone_set('PRC');// 设定用于一个脚本中所有日期时间函数的默认时区
         $createTime = date('Y-m-d H:i:s');
 
-        $ut = UserController::isLogin();
+        $ut = UserController::isLogin();//登陆者
 
         //已经登录
         if ($ut != -1) {
@@ -47,7 +47,7 @@ class QuestionController extends Yaf_Controller_Abstract
 
             $dbHelp = DbHelp::getInstance();
             $table = 'question';
-            $question = $dbHelp->dispense($table);
+            $question = $dbHelp->dispense($table);//创建或更新表
             $question->ut = $ut;
             $question->type = $type;
             $question->baseprice = $basePrice;
@@ -58,17 +58,17 @@ class QuestionController extends Yaf_Controller_Abstract
             $question->answerut = $answerut;
             $question->createtime = $createTime;
 
-            $table = 'message';
+            $table = 'message';//消息表
             try {
-                R::begin();
-                $dbHelp->store($question);
+                R::begin();//开始一个事务 同时操作QUESTON / MESSAGE  /BILL 三个表
+                $dbHelp->store($question);//问题表插入数据
 
                 $message = $dbHelp->dispense($table);
                 $message->sendut = $ut;
                 $message->acceptedut = $answerut;
                 $message->content = $content;
                 $message->type = 1;
-                $dbHelp->store($message);
+                $dbHelp->store($message);//消息表插入数据
 
                 $table = 'user';
                 $sql = 'ut = ?';
@@ -77,7 +77,7 @@ class QuestionController extends Yaf_Controller_Abstract
                 $user->setAttr('balance', $user->getProperties()['balance'] - $totalPrice);
                 $dbHelp->store($user);
 
-                $table = 'bill';
+                $table = 'bill';//账单表
                 $bill = $dbHelp->dispense($table);
                 $bill->status = 0;
                 $bill->ut = $ut;
@@ -86,7 +86,7 @@ class QuestionController extends Yaf_Controller_Abstract
                 $bill->ip = $this->getIP();
                 $bill->remarks = $user['user_name'] . '提出了问题，支付了' . $totalPrice . '元钱';
                 $bill->create_time = date('Y-m-d H:i:s');
-                $dbHelp->store($bill);
+                $dbHelp->store($bill);//账单表插入数据
 
                 R::commit();
                 $json = UserController::baseJson();
@@ -131,16 +131,18 @@ class QuestionController extends Yaf_Controller_Abstract
         header('Access-Control-Allow-Origin: *');
         $page = $this->getRequest()->getPost('page');
 
-        $value = array(($page) * 10, ($page + 1) * 10);
-        $sqlAnswer = 'ORDER BY createtime DESC LIMIT ?,?';
+        $value = array(($page) * 10 , ($page + 1) * 10);
+        // file_put_contents('D:a.txt',$value);
+        $sqlAnswer = ' ORDER BY createtime DESC LIMIT ?,? ';
         $result = $this->getAnswer($value, $sqlAnswer);
-
+        // file_put_contents('D:a.txt',$result);
         $json = UserController::baseJson();
         $json['data'] = $result;
         $json['code'] = 0;
         $json['message'] = 'success';
         $json = json_encode($json);
         echo $json;
+        // file_put_contents('D:a.txt',$json);
         return false;
     }
 
@@ -178,21 +180,41 @@ class QuestionController extends Yaf_Controller_Abstract
         }
         return $result;
     }
-
-    //获得问答的详细信息
-    public static function getAnswer($value, $sql)
+    // 获得单个问题的数据
+    public static function getAnswerOne($questionid)
     {
         $dbHelp = DbHelp::getInstance();
         $table = 'answer';
+        $sql = 'questionid = ?';
+        $value = array($questionid);
+        $answer = $dbHelp->findOne($table, $sql, $value);
+        $answer = $answer->getProperties();
+        $result['answerContent'] = $answer['content'];
+        $result['answerType'] = $answer['type'];
+        $result['fileurl'] = $answer['fileurl'];
+        $result['answerUT'] = $answer['ut'];
+        $result['answerId'] = $answer['id'];
+        $result['answerId'] = $answer['user_name'];
+        $result['answerTime'] = self::showTime($answer['createtime']);
+        return $result;
+    }
+    //获得问答的详细信息
+    public static function getAnswer($value, $sql)
+    {
+
+        $dbHelp = DbHelp::getInstance();
+        $table = 'answer';
         $array = $dbHelp->findAll($table, $sql, $value);
-//        var_dump($array);
-//        exit;
+        // file_put_contents('d:a.txt',$array);
+       // var_dump($array);
+       // exit;
 
         $result = array();
         $i = 0;
         foreach ($array as $item) {
             $j = $item->getProperties();
             //通过$j查找问题的内容
+            // file_put_contents('d:a.txt',$j);
 
             $time = self::showTime($j['createtime']);
             $j['time'] = $time;
@@ -203,12 +225,15 @@ class QuestionController extends Yaf_Controller_Abstract
             $sql = ' id = ?';
             $value = array($questionid);
             $question = $dbHelp->findOne($table, $sql, $value);
+            file_put_contents('d:a.txt',$question);
             if (empty($question)) {
                 continue;
             } else {
                 $question = $question->getProperties();
                 $j['questioncontent'] = $question['content'];
                 $j['listenprice'] = $question['listenprice'];
+                //获取旁听数;
+                $j['listennum'] = $question['listennum'];
 
                 //查找用户表，获取用户信息
                 $table = 'user';
@@ -249,11 +274,11 @@ class QuestionController extends Yaf_Controller_Abstract
                         }
 
                         //获取旁听数
-                        $sql = 'answerid = ?';
-                        $value = array($id);
-                        $listen = $dbHelp->findAll($table, $sql, $value);
-                        $length = sizeof($listen);
-                        $j['listennum'] = $length;
+                        // $sql = 'answerid = ?';
+                        // $value = array($id);
+                        // $listen = $dbHelp->findAll($table, $sql, $value);
+                        // $length = sizeof($listen);
+                        // $j['listennum'] = $length;
 
                     } else {
                         $j['isLogin'] = 0;
@@ -326,16 +351,16 @@ class QuestionController extends Yaf_Controller_Abstract
 
             //因为问答详情的话，那么详情只会有一个
             //payment 0: 未付钱   1: 已付钱
-            if ($result[0]['payment'] == 0) {
-                $json = UserController::baseJson();
-                $json['code'] = -1;
-                $json['message'] = '未付款';
-                $json['data'] = array();
-                $json = json_encode($json);
-                echo $json;
-                return false;
-            } //已经付钱
-            else {
+            // if ($result[0]['payment'] == 0) {
+                // $json = UserController::baseJson();
+                // $json['code'] = -1;
+                // $json['message'] = '未付款';
+                // $json['data'] = array();
+                // $json = json_encode($json);
+                // echo $json;
+                // return false;
+            // } //已经付钱
+            // else {
                 $json = UserController::baseJson();
                 $json['code'] = 0;
                 $json['message'] = 'success';
@@ -343,7 +368,7 @@ class QuestionController extends Yaf_Controller_Abstract
 
                 $json = json_encode($json);
                 echo $json;
-            }
+            // }
         } //登录失败
         else {
             $json = UserController::baseJson();
@@ -356,6 +381,29 @@ class QuestionController extends Yaf_Controller_Abstract
         return false;
     }
 
+    //获得问答的ANSWERID跟questionID
+    public function simpleDetailAction(){
+        $request = $this->getRequest();
+        $answerId = $request->getPost('answerId');
+        $dbHelp = DbHelp::getInstance();
+        $ut = UserController::isLogin();
+        $table = 'answer';
+        $sql = 'id = ?';
+        $value = array($answerId);
+        $answer=array();
+        $answer = $dbHelp->findOne($table, $sql, $value);
+        // file_put_contents('d:v.txt',$answer);
+        //输出
+        $json = UserController::baseJson();
+        $json['code'] = 0;
+        $json['message'] = 'success';
+        $json['data'] = $answer;
+        $json = json_encode($json);
+        echo $json;
+        // file_put_contents('d:v.txt',$json);
+        return false;
+
+    }
     //获得问答详情细节
     public function mDetailAction()
     {

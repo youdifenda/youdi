@@ -20,9 +20,9 @@
 
 <div class="questionPage">
     <div class="personInfo">
-        <a href="#" class="img"><img src="images/peo.png" id="userImg"/></a>
+        <a href="#" class="img"><img src="" id="userImg"/></a>
         <div class="des">
-            <h3 id="userName"><a href="#" class="share"></a>唐老师</h3>
+            <h3 id="userName"><a href="#"  class="share"></a></h3>
             <p class="identity" id="company">巅峰财富|策略分析师</p>
             <p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
                 丁凤楚 男，汉</p>
@@ -35,8 +35,8 @@
     </div>
 
     <div class="addQues">
-        <div class="d1" id="nowPrice">当前报酬：<i>100U</i></div>
-        <div class="d2">追加悬赏金额：<input type="text" name="" id="addPrice"/> U <i>（追加后更快得到答复）</i></div>
+        <div class="d1" id="nowPrice">当前报酬：<i></i></div>
+        <div class="d2">追加悬赏金额：<input type="text" name="" value="0"id="addPrice"/> U <i>（追加后更快得到答复）</i></div>
         <div class="txt">
             <textarea placeholder="继续追问" id="content"></textarea>
             <p>0/100</p>
@@ -49,7 +49,10 @@
 <script src="js/all.js"></script>
 <script>
     $(function () {
+        //ZH新加
+        //获得地址栏参数
         var id = getArgsFromHref('id');
+        // alert(id);
         id = id.replace("#", "");
         //请求数据，获得用户详情
         $.ajax({
@@ -57,11 +60,14 @@
             url: '/user/information',
             data: {
                 "ut": id
+                // "ut": 'QLWlxG3R'
             },
-            dataType: 'json',
+            dataType: 'JSON',
             timeout: 2000,
             success: function (data) {
+                data=JSON.parse(data);
                 var json = data.data;
+                // alert(data);
                 if (json != null) {
                     var action = '';
                     if (json.isFollow == 1) action = 'on';
@@ -140,27 +146,38 @@
         var basePrice = $("#basePrice").html();
         basePrice = basePrice.replace("U", "");
         var addPrice = $('#addPrice').val();
+        //得到问题数据
+        var content = $('#content').val();
+        var answerut = $('#submit').attr('answerut');
 
         $.ajax({
             type: 'POST',
             url: '/user/query',
             data: {
+                "basePrice": basePrice, "addPrice": addPrice
+                , "content": content, "answerut": answerut,
+                "type":0301
             },
             dataType: 'json',
             timeout: 2000,
             success: function (data) {
+                // alert(data);
                 var code = data.code;
                 if(code == 0){
                     var result = data.data;
+                    // alert(basePrice);
                     var total = parseFloat(basePrice) + parseFloat(addPrice);
-                    if(total > result.balance){
-                        alert('金额不足,去充值');
-                        window.location.href = '/apk/recharge.html';
-                    }
-                    else{
-                        alert('余额充足,将付钱');
-                        submitQuestion();
-                    }
+                    // var a=parseFloat();
+                    // alert(a);die();
+                    window.location.href = '/apk/pay.html?total='+total;
+                    // if(total > result.balance){
+                    //     alert('金额不足,去充值');
+                    //     window.location.href = '/apk/recharge.html';
+                    // }
+                    // else{
+                    //     alert('余额充足,将付钱');
+                    //     submitQuestion();
+                    // }
 
                 }
             },
@@ -176,7 +193,6 @@
         var addPrice = $('#addPrice').val();
         var content = $('#content').val();
         var answerut = $('#submit').attr('answerut');
-
         $.ajax({
             type: 'POST',
             url: '/question/submit',
