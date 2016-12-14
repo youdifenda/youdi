@@ -62,7 +62,7 @@
             $('.qstabcont .icont').hide().eq($(this).index()).show();
             return false;
         });
-        var id = getArgsFromHref('id');
+        var id = getArgsFromHref('answerId');
         id = id.replace('#','');
 
         //请求数据，获得用户详情
@@ -94,7 +94,7 @@
     function submit() {
 
         //提交答案 需要知道回答类型
-        var questionId = getArgsFromHref('id');
+        var questionId = getArgsFromHref('answerId');
         questionId = questionId.replace('#','');
 //        alert($('.myanswer.qstab.on').attr('value',''));
         var test = getByClass('on');

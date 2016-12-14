@@ -427,14 +427,15 @@
             //     me.resetload();
             // },2000);
             $.ajax({
+                // alert(1);
                 type: 'POST',
-                url: '/question/recent',
+                url: '/question/hottest',
                 data: {page: page},
                 dataType: 'json',
                 success: function (data) {
                     var result = data;
                     if (result.code == 0) {
-                    //alert(result.message);
+                    // alert(result.message);
 
                         var json = result.data;
                         if(json.length != 0 ) {
@@ -494,7 +495,7 @@
                                     html += '<p class="pram">' + json[i].questioncontent + '</p>';
                                     html += '<div class="personInfo">';
                                     //图片的点击效果
-                                    html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].imgs + '></a>';
+                                    html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].fileurl + '></a>';
                                     html += '<div class="des">';
                                     //用户名称
                                     html += '<h3>' + json[i].user_name + '</h3>';
@@ -588,6 +589,7 @@
             }
         })
     }
+
     function hottest(){
         window.location.href="hottest.html";
     }

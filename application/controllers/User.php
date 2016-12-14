@@ -175,6 +175,7 @@ class  UserController extends Yaf_Controller_Abstract
                                 $user = $dbHelp->dispense($table);
                                 $user->ut = $ut;
                                 $user->userName = $userName;
+                                $user->nick_name="YD_".$this->make_char();
                                 $user->password = $password;
                                 $val = $dbHelp->store($user);
 
@@ -213,6 +214,131 @@ class  UserController extends Yaf_Controller_Abstract
             echo json_encode($json);
             return false;
         }
+    }
+    //修改资料
+    function modifyAction(){
+        $ut = self::isLogin();
+        $dbHelp = DbHelp::getInstance();
+        if ($ut == -1) {
+            $json = self::baseJson();
+            $json['code'] = -1;
+            $json['message'] = '未登录';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        } else{
+            $table = 'user';
+            $sql = 'ut = ?';
+            $value = array($ut);
+            $user = $dbHelp->findOne($table, $sql, $value);
+            $user = $user->getProperties();
+            $result['nick_name'] = $user['nick_name'];
+            $result['basePrice'] = $user['basePrice'];
+            $result['honor'] = $user['honor'];
+            $result['abstract'] = $user['abstract'];
+            $result['imgs'] = $user['imgs'];
+            $json = self::baseJson();
+            $json['code'] = 0;
+            $json['message'] = 'success';
+            $json['data'] = $result;
+            $json = json_encode($json);
+            echo $json;
+            return false;
+
+        }
+    }
+
+
+    //提交修改资料
+    function submitModifyAction(){
+        $request = $this->getRequest();
+        $nick_name = $request->getPost('nick_name');
+        $honor = $request->getPost('honor');
+        $abstract = $request->getPost('abstract');
+        $dbHelp = DbHelp::getInstance();
+        $ut = self::isLogin();
+        //未登录
+        if ($ut == -1) {
+            $json = self::baseJson();
+            $json['code'] = -1;
+            $json['message'] = '未登录';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        } else{
+            $table = 'user';
+            $sql = 'ut = ?';
+            $value = array($ut);
+            // $time = QuestionController::showTime($result[$i]['createtime']);
+            $user = $dbHelp->findOne($table, $sql, $value);
+            $user->ut = $ut;
+            $user->nick_name = $nick_name;
+            $user->honor = $honor;
+            $user->abstract = $abstract;
+            // $user->imgs = $imgs;
+            $val = $dbHelp->store($user);
+            $json = self::baseJson();
+            $json['code'] = 0;
+            $json['message'] = 'success';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        }
+    }
+    //价格修改
+    public function basePriceAction(){
+        $request = $this->getRequest();
+        $basePrice = $request->getPost('basePrice');
+        $ut = self::isLogin();
+        //未登录
+        if ($ut == -1) {
+            $json = self::baseJson();
+            $json['code'] = -1;
+            $json['message'] = '未登录';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        } else{
+            $table = 'user';
+            $sql = 'ut = ?';
+            $value = array($ut);
+            // $time = QuestionController::showTime($result[$i]['createtime']);
+            $user = $dbHelp->findOne($table, $sql, $value);
+            $user->ut = $ut;
+            $user->basePrice = $basePrice;
+            $val = $dbHelp->store($user);
+            $json = self::baseJson();
+            $json['code'] = 0;
+            $json['message'] = 'success';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        }
+
+    }
+    //修改密码
+    public function modifyPwd(){
+
+    }
+    //生成随机昵称字符串
+    function make_char( $length = 7 )
+    {
+        // 密码字符集，可任意添加你需要的字符
+        $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 
+        'i', 'j', 'k', 'l','m', 'n', 'o', 'p', 'q', 'r', 's', 
+        't', 'u', 'v', 'w', 'x', 'y','z', 'A', 'B', 'C', 'D', 
+        'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O', 
+        'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y','Z', 
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+        // 在 $chars 中随机取 $length 个数组元素键名
+        $keys = array_rand($chars, $length);
+        $makechar = '';
+        for($i = 0; $i < $length; $i++)
+        {
+            // 将 $length 个数组元素连接成字符串
+            $makechar .= $chars[$keys[$i]];
+        }
+        return $makechar;
     }
 
     //我问
@@ -261,7 +387,7 @@ class  UserController extends Yaf_Controller_Abstract
                         $value = array($userId);
                         $user = $dbHelp->findOne($table, $sql, $value);
                         $user = $user->getProperties();
-                        $result[$i]['answerUserName'] = $user['user_name'];
+                        $result[$i]['answerUserName'] = $user['nick_name'];
                         $result[$i]['answerUserImg'] = $user['imgs'];
 //                    $result[$i]['userDesc'] = $answer['fileurl'];
 
@@ -482,10 +608,12 @@ class  UserController extends Yaf_Controller_Abstract
         } else {
             $page = $this->getRequest()->getPost('page');
             $table = 'question';
-            $sql = 'answerut = ?';
+            $sql = 'answerut = ? order by createtime desc';
             $value = array($ut);
             $array = $dbHelp->findAll($table, $sql, $value);
+
             $result = array();
+            // file_put_contents("d:a.txt",$array);
             $i = 0;
             foreach ($array as $item) {
                 $j = $item->getProperties();
@@ -500,6 +628,8 @@ class  UserController extends Yaf_Controller_Abstract
                 $result[$i]['time'] = $time;
                 $answer = $dbHelp->findOne($table, $sql, $value);
                 $result[$i]['payment'] = 0;
+                // var_dump($result);
+                // file_put_contents('D:a.txt',$result);
 
 
                 //如果答案不为空
@@ -525,6 +655,14 @@ class  UserController extends Yaf_Controller_Abstract
                         $result[$i]['answerUserName'] = $user['user_name'];
                         $result[$i]['answerUserImg'] = $user['imgs'];
 //                    $result[$i]['userDesc'] = $answer['fileurl'];
+//                      $result[$i]['state'] = 1;
+                        $table = 'user';
+                        $sql = 'ut = ?';
+                        $value = array($result[$i]['ut']);
+                        $user = $dbHelp->findOne($table, $sql, $value);
+                        $user = $user->getProperties();
+                        $result[$i]['userName'] = $user['user_name'];
+                        $result[$i]['userImg'] = $user['imgs'];
 
 
                         //因为是我回答的向我提问的问题，所以无需付费，我也可以听自己的回答
@@ -628,10 +766,22 @@ class  UserController extends Yaf_Controller_Abstract
             $sql = 'ut = ? and followut = ?';
             $value = array($ut, $userId);
             $follow = $dbHelp->findOne($table, $sql, $value);
-
             //取消关注
             if (!empty($follow)) {
-                $dbHelp->trash($follow);       
+                $dbHelp->trash($follow);
+                //给USER表的fansnum字段-1;
+                $table = 'user';
+                $sql = 'ut = ? ';
+                $value = array($userId);
+                $user = $dbHelp->findOne($table, $sql, $value);
+                $fansnum=$user->getProperties()['fansnum'] - 1;
+                // //将fansnum字段+1;
+                $user->setAttr('fansnum', $fansnum);
+                $dbHelp->store($user);
+
+
+
+
                 $json = self::baseJson();
                 $json['code'] = 0;
                 $json['message'] = '取消关注';
@@ -649,6 +799,19 @@ class  UserController extends Yaf_Controller_Abstract
                 $result = $dbHelp->store($follow);
                 if ($result != -1) {
                     $json = self::baseJson();
+                    //关注+1
+                    $table = 'user';
+                    //     // $question = $dbHelp->dispense($table);//创建或更新表
+                    $sql = 'ut = ? ';
+                    $value = array($userId);
+                    $user = $dbHelp->findOne($table, $sql, $value);
+                    // $listennum=$question->getProperties()['listennum'] + 1;
+                    $fansnum=$user->getProperties()['fansnum'] + 1;
+                    // //将旁听字段+1;
+                    $user->setAttr('fansnum', $fansnum);
+                    $dbHelp->store($user);
+
+
                     $json['code'] = 0;
                     $json['message'] = '关注成功';
                     $json = json_encode($json);
@@ -698,8 +861,9 @@ class  UserController extends Yaf_Controller_Abstract
                     $user = $dbHelp->findOne($table, $sql, $value);
                     $user = $user->getProperties();
                     $result[$i]['userName'] = $user['user_name'];
-                    // $result[$i]['userImg'] = $user['imgs'];
+                    $result[$i]['userImg'] = $user['imgs'];
                     $result[$i]['followut'] = $user['ut'];
+                    $result[$i]['fansNum'] = $user['fansnum'];
 
                     //查答案表。获取答复数
                     $table = 'answer';
@@ -708,13 +872,8 @@ class  UserController extends Yaf_Controller_Abstract
                     $answer = $dbHelp->findAll($table, $sql, $value);
                     $num = sizeof($answer);
                     $result[$i]['answerNum'] = $num;
-                    //查粉丝表，获取粉丝数量
-                    $table = 'follow';
-                    $sql = 'followut = ? ';
-                    $value = array($user['ut']);
-                    $fans = $dbHelp->findAll($table, $sql, $value);
-                    $result[$i]['fansNum'] = sizeof($fans);
 
+                    //查关注表看是否关注
                     $i++;
                 }
                 $json = self::baseJson();
@@ -948,6 +1107,68 @@ class  UserController extends Yaf_Controller_Abstract
             return false;
         }
     }
+    //查找老师用户
+    //财富达人
+    public function teacherAction(){
+        $ut = self::isLogin();
+        if ($ut == -1) {
+            $json = self::baseJson();
+            $json['code'] = -1;
+            $json['message'] = '用户未登录';
+            $json = json_encode($json);
+            echo $json;
+            return false;
+        } else {
+            $dbHelp = DbHelp::getInstance();
+            $table="user";
+            $page = $this->getRequest()->getPost('page');
+            $sql = 'stage = ? order by fansnum desc LIMIT ?,?';
+            $value = array(1,($page) * 10, ($page + 1) * 10);
+            $user = $dbHelp->findAll($table, $sql, $value);
+            $i = 0;
+            $result=array();
+            if (sizeof($user) != 0) {
+                $length = sizeof($user);
+                foreach ($user as $item) {
+                    $user = $item->getProperties();
+                    $result[$i]['userName'] = $user['user_name'];
+                    $result[$i]['userImg'] = $user['imgs'];
+                    $result[$i]['followut'] = $user['ut'];
+                    $result[$i]['fansNum'] = $user['fansnum'];
+
+                    $table = 'answer';
+                    $sql = 'ut = ?';
+                    $value = array($user['ut']);
+                    $answer = $dbHelp->findAll($table, $sql, $value);
+                    $num = sizeof($answer);
+                    $result[$i]['answerNum'] = $num;
+
+                    file_put_contents('D:b.txt',2);
+                    $table = 'follow';
+                    $sql = 'ut = ? and followut = ?';
+                    $value = array($ut,$result[$i]['followut']);
+                    $follow = $dbHelp->findOne($table, $sql, $value);
+                    $num = sizeof($follow);
+                    if($num!= 0){
+                        $result[$i]['follow'] = 1;
+                    }else{
+                        $result[$i]['follow'] = 0;
+                    }
+
+                    $i++;
+                }
+                $json = self::baseJson();
+                $json['code'] = 0;
+                $json['message'] = 'success';
+                $json['data'] = $result;
+                $json = json_encode($json);
+                    
+                // file_put_contents('D:b.txt',$json);
+                echo $json;
+                return false;
+            }
+        }
+    }
 
     //批量取消收藏
     public function clearCollectAction()
@@ -1069,7 +1290,7 @@ class  UserController extends Yaf_Controller_Abstract
                 $json['message'] = 'success';
                 $json['data'] = $user;
                 $json = json_encode($json);
-                file_put_contents('d:a.txt',$json);
+                // file_put_contents('d:a.txt',$json);
                 echo $json;
                 return false;
             } //没有数据

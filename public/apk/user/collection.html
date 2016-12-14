@@ -183,7 +183,7 @@
                                 html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
                                 html += '<p class="pram">' + result[i].questioncontent + '</p>';
                                 html += '<div class="personInfo">';
-                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '" /></a>';
+                                html += '<a href="#" class="img"><img src="' + result[i].imgs + '" /></a>';
                                 html += '<div class="des">';
                                 html += '<h3>' + result[i].user_name + '</h3>';
                                 html += '<p class="identity">巅峰财富|策略分析师</p>';
@@ -199,7 +199,7 @@
                                 html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
                                 html += '<p class="pram">' + result[i].questioncontent + '</p>';
                                 html += '<div class="personInfo">';
-                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '"/></a>';
+                                html += '<a href="#" class="img"><img src="' + result[i].imgs + '"/></a>';
                                 html += '<div class="des">';
                                 html += '<h3>' + result[i].user_name + '</h3>';
                                 html += '<p class="identity">巅峰财富|策略分析师</p>';
@@ -215,7 +215,7 @@
                                 html += '<span class="checkModel"><input type="checkbox" class="sigleck" name="' + result[i].id + '"></span>';
                                 html += '<p class="pram">' + result[i].questioncontent + '</p>';
                                 html += '<div class="personInfo">';
-                                html += '<a href="#" class="img"><img src="' + result[i].fileurl + '"/></a>';
+                                html += '<a href="#" class="img"><img src="' + result[i].imgs + '"/></a>';
                                 html += '<div class="des">';
                                 html += '<h3>' + result[i].user_name + '</h3>';
                                 html += '<p class="identity">巅峰财富|策略分析师</p>';
@@ -291,7 +291,7 @@
             html = html.substr(0, html.length - 6);
             var str = '您将支付' + html + '枚U币用于旁听该问题回答，请确认支付。';
             $('#payContent').html(str);
-            $('#goPay').attr('onclick', 'pay(' + answerId + ')');
+            $('#goPay').attr('onclick', 'paylisten(' + answerId + ')');
             animateshowHide($('.fixbottomPay .bg'));
             return false;
         });
@@ -323,7 +323,7 @@
             }
         })
     });
-
+    //
     function clearCollect() {
         var result = $('.sigleck:checked');
         var length = result.length;
@@ -351,6 +351,27 @@
                 alert('Ajax error!');
             }
         });
+    }
+    function paylisten(answerId) {
+        //得到问题数据
+        $.ajax({
+            type: 'POST',
+            url: '/question/simpleDetail',
+            data: {
+                "answerId": answerId
+            },
+            dataType: 'json',
+            timeout: 2000,
+            success: function (data) {
+                var questionId=data.data.questionid;
+                window.location.href="../listenpay.html?answerId="+answerId+"&questionId="+questionId
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
+
+        
     }
 </script>
 </body>

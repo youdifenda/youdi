@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- <form action="" method="" enctype="multipart/form-data"> -->
+	<!-- <input type="file" name="imgs" > </input><br/> -->
+	<!-- 头像<img src="" id="infoimgs"><br/> -->
+	头衔<input type="text" name="honor" id="infohonor"></input><br/>
+	<!-- <h3 id="infonick_name">唐老师</h3> -->
+	昵称<input type="text" name="nack_name" id="infonick_name" ></input><br/>
+	个人简介<input type="text" name="abstract" id="infoabstract" value=""></input><br/>
+	<!-- 提问价格<input type="text" name="basePrice" id="infobasePrice" value=""></input><br/> -->
+	<input type="button"  onclick="submit()" value="修改资料"></input>
+	<!-- </form> -->
+</body>
+<script src="../js/zepto.min.js"></script>
+<script src="../js/all.js"></script>
+<script src="../js/common.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$.ajax({
+                type: 'POST',
+                url: '/user/modify',
+                data: {},
+                dataType: 'json',
+                timeout: 1000,
+                success: function (data) {
+                    var json = data.data;   
+                        $('#infoabstract').attr("value",json.abstract);
+                        $('#infonick_name').attr("value",json.nick_name);
+                        $('#infohonor').attr("value",json.honor);
+                        $('#infoimgs').attr("src", json.imgs);
+                        // $('#infobasePrice').attr("value", json.basePrice);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            });
+            return false;
+        });
+
+
+	function submit(){
+		// $("#txt").attr("value")；
+		var nick_name = $("#infonick_name").val();
+		var honor = $("#infohonor").val();
+		var abstract = $("#infoabstract").val();
+		// var imgs = $("#infoimgs").attr("src");
+		// alert(nick_name);
+		// alert(honor);
+		// alert(abstract);
+
+		$.ajax({
+                type: 'POST',
+                url: '/user/submitModify',
+                data: {
+                	"nick_name":nick_name,
+                	"honor":honor,
+                	"abstract":abstract
+
+                },
+                dataType: 'json',
+                timeout: 1000,
+                success: function (data) {
+                       alert("修改成功");
+                   	window.location.href="./userCenter.html";
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            });
+            return false;
+		
+	}
+</script>
+</html>

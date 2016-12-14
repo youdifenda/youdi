@@ -447,6 +447,15 @@ class PayController extends Yaf_Controller_Abstract
                     $question->setAttr('listennum', $listennum);
                     $dbHelp->store($question);
 
+                    $table = 'answer';
+                    $sql = 'id = ? ';
+                    $value = array($answerId);
+                    $answer = $dbHelp->findOne($table, $sql, $value);
+                    $listennum=$answer->getProperties()['listennum'] + 1;
+                    //将旁听字段+1;
+                    $answer->setAttr('listennum', $listennum);
+                    $dbHelp->store($answer);
+
                     $table = 'bill';//账单表
                     $bill = $dbHelp->dispense($table);
                     $bill->status = 0;

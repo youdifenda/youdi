@@ -72,7 +72,7 @@
         <!--</li>-->
     </ul>
 </div>
-<div><a href='follow.html'>问一个</a></div>
+<div><a href='../teacherlist.html'>问一个</a></div>
 
 <!-- 查看信息 -->
 <div class="fixbottomBox fixbottomInfo" style="display:none">
@@ -290,7 +290,7 @@
                         else if (result[i].state == 1) {
                             html += '<li state="0" class="myli" data="'+result[i].id+'">';
                             html += '<div class="personInfo">';
-                            html += '<a href="/apk/ask.html?id=' + result[i].ut + '" class="img"><img src="' + result[i].userImg + '"/></a>';
+                            html += '<a href="#" class="img"><img src="' + result[i].userImg + '"/></a>';
                             html += '<div class="des">';
                             html += '<h3>' + result[i].userName + '</h3>';
                             html += '<p class="identity"><span class="state">待回答</span>巅峰财富|策略分析师</p>';
@@ -304,7 +304,7 @@
                         else if (result[i].state == 2) {
                             html += '<li>';
                             html += '<div class="personInfo">';
-                            html += '<a href="/apk/ask.html?id=' + result[i].ut + '" class="img"><img src="../images/peo.png"/></a>';
+                            html += '<a href="/apk/ask.html?id=' + result[i].ut + '" class="img"><img src="'+result[i].userImg+'"/></a>';
                             html += '<div class="des">';
                             html += '<h3>'+result[i].userName+'</h3>';
                             html += '<p class="identity"><span class="state overstate">已过期</span>巅峰财富|策略分析师</p>';

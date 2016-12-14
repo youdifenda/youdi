@@ -148,9 +148,10 @@ class QuestionController extends Yaf_Controller_Abstract
 
     //最热
     public function hottestAction()
-    {
+    {   
+        header('Access-Control-Allow-Origin: *');
         $page = $this->getRequest()->getPost('page');
-        $sql = ' ORDER BY listennum DESC LIMIT ?,?';
+        $sql = 'order by listennum desc,createtime desc LIMIT ?,?';
         $value = array(($page) * 10, ($page + 1) * 10);
         $result = $this->getAnswer($value, $sql);
 
@@ -160,8 +161,11 @@ class QuestionController extends Yaf_Controller_Abstract
         $json['code'] = 0;
         $json['message'] = 'success';
         $json = json_encode($json);
+        // file_put_contents("D:a.txt",$result);
         echo $json;
         return false;
+        
+        
     }
 
     //得到问题的数据
