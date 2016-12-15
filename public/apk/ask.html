@@ -41,7 +41,7 @@
             <textarea placeholder="继续追问" id="content"></textarea>
             <p>0/100</p>
         </div>
-        <div class="center btn"><a href="#" class="abtn" onclick="query()" id="submit">提交问题</a></div>
+        <div class="center btn"><a href="#" class="abtn"  onclick="query()" id="submit">提交问题</a></div>
     </div>
 </div>
 <script src="js/zepto.min.js"></script>
@@ -143,49 +143,88 @@
     }
 
     function query() {
-        var basePrice = $("#basePrice").html();
-        basePrice = basePrice.replace("U", "");
-        var addPrice = $('#addPrice').val();
-        //得到问题数据
-        var content = $('#content').val();
-        var answerut = $('#submit').attr('answerut');
+        if(window.confirm('确定要提交吗？')){
+                 //alert("确定");
+                 
+                var basePrice = $("#basePrice").html();
+                basePrice = basePrice.replace("U", "");
+                var addPrice = $('#addPrice').val();
+                //得到问题数据
+                var content = $('#content').val();
+                var answerut = $('#submit').attr('answerut');
+                var total = parseFloat(basePrice) + parseFloat(addPrice);
+                // alert('确认支付');
 
-        $.ajax({
-            type: 'POST',
-            url: '/user/query',
-            data: {
-                "basePrice": basePrice, "addPrice": addPrice
-                , "content": content, "answerut": answerut,
-                "type":0301
-            },
-            dataType: 'json',
-            timeout: 2000,
-            success: function (data) {
-                // alert(data);
-                var code = data.code;
-                if(code == 0){
-                    var result = data.data;
-                    // alert(basePrice);
-                    var total = parseFloat(basePrice) + parseFloat(addPrice);
-                    // var a=parseFloat();
-                    // alert(a);die();
-                    window.location.href = '/apk/pay.html?total='+total;
-                    // if(total > result.balance){
-                    //     alert('金额不足,去充值');
-                    //     window.location.href = '/apk/recharge.html';
-                    // }
-                    // else{
-                    //     alert('余额充足,将付钱');
-                    //     submitQuestion();
-                    // }
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/query',
+                    data: {
+                        "basePrice": basePrice, "addPrice": addPrice
+                        , "content": content, "answerut": answerut,
+                        "type":0301
+                    },
+                    dataType: 'json',
+                    timeout: 2000,
+                    success: function (data) {
+                        // alert(data);
+                        var code = data.code;
+                        if(code == 0){
+                            // var result = data.data;
+                            // alert(basePrice);
+                            // var total = parseFloat(basePrice) + parseFloat(addPrice);
+                            // var a=parseFloat();
+                            // alert(a);die();
+                            // window.location.href = '/apk/pay.html?total='+total;
+                            // if(total > result.balance){
+                            //     alert('金额不足,去充值');
+                            //     window.location.href = '/apk/recharge.html';
+                            // }
+                            // else{
+                            //     alert('余额充足,将付钱');
+                            //     submitQuestion();
+                            // }
 
-                }
-            },
-            error: function (xhr, type) {
-                alert('Ajax error!')
-            }
-        })
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!')
+                    }
+                });
+
+                    $.ajax({
+
+                        type: 'POST',
+                        url: '/pay/payOk',
+                        data: {
+                            "total":total
+                        },
+                        dataType: 'json',
+                        timeout: 2000,
+                        success: function (data) {
+                            // var data= JSON.parse(data);
+                            if(data.code == 0){
+                                top.location.href="http://"+data.data;
+                            }else{
+                                window.history.back(-1);
+                            }
+
+                            // alert(url);
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!')
+                        }
+                    })
+
+
+
+                 return true;
+              }else{
+                 //alert("取消");
+                 return false;
+             }
+        
     }
+
 
     function submitQuestion() {
         var basePrice = $("#basePrice").html();

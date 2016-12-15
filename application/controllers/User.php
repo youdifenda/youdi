@@ -387,9 +387,9 @@ class  UserController extends Yaf_Controller_Abstract
                         $value = array($userId);
                         $user = $dbHelp->findOne($table, $sql, $value);
                         $user = $user->getProperties();
-                        $result[$i]['answerUserName'] = $user['nick_name'];
+                        $result[$i]['answerUserName'] = $user['user_name'];
                         $result[$i]['answerUserImg'] = $user['imgs'];
-//                    $result[$i]['userDesc'] = $answer['fileurl'];
+                        $result[$i]['honor'] = $user['honor'];
 
                         $table = 'listen';
                         $sql = " answer_id = ? and ut = ?";
@@ -422,6 +422,7 @@ class  UserController extends Yaf_Controller_Abstract
                         $user = $user->getProperties();
                         $result[$i]['userName'] = $user['user_name'];
                         $result[$i]['userImg'] = $user['imgs'];
+                        $result[$i]['honor'] = $user['honor'];
 
                         //已过期
                         //中文占3个字节
@@ -445,6 +446,7 @@ class  UserController extends Yaf_Controller_Abstract
                     $user = $user->getProperties();
                     $result[$i]['userName'] = $user['user_name'];
                     $result[$i]['userImg'] = $user['imgs'];
+                    $result[$i]['honor'] = $user['honor'];
 
                     //已过期
                     //中文占3个字节
@@ -482,21 +484,23 @@ class  UserController extends Yaf_Controller_Abstract
         } else {
             $page = $this->getRequest()->getPost('page');
             $table = 'listen';
+            $result=array();
             $result = $this->getList($page, $table, $ut);
             $length = sizeof($result);
             for ($i = 0; $i < $length; $i++) {
                 $sql = 'id = ?';
                 $value = array($result[$i]['answerid']);
                 $answer = QuestionController::getAnswer($value, $sql);
-                $answer = $answer[0];
-                $result[$i] = $answer;
+                // var_dump($answer);
+                // $answer = $answer[0];
+                $result[$i] = @$answer[0];
             }
             $json = self::baseJson();
             $json['code'] = 0;
             $json['message'] = 'success';
             $json['data'] = $result;
             $json = json_encode($json);
-            file_put_contents('d:a.txt',$json);
+            // file_put_contents('d:a.txt',$json);
             echo $json;
             return false;
         }
@@ -864,6 +868,8 @@ class  UserController extends Yaf_Controller_Abstract
                     $result[$i]['userImg'] = $user['imgs'];
                     $result[$i]['followut'] = $user['ut'];
                     $result[$i]['fansNum'] = $user['fansnum'];
+                    $result[$i]['honor'] = $user['honor'];
+                    $result[$i]['abstract'] = $user['abstract'];
 
                     //查答案表。获取答复数
                     $table = 'answer';
@@ -1235,6 +1241,7 @@ class  UserController extends Yaf_Controller_Abstract
         $answer = $dbHelp->findAll($table, $sql, $value);
         $answercount = sizeof($answer);
         $user['answerCount'] = $answercount;
+        $user['imgs'] = @ltrim($user['imgs'],"../");
 
 
         //获得粉丝数

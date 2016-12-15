@@ -6,6 +6,9 @@
  * Date: 2016/11/29
  * Time: 13:44
  */
+
+// define('ROOT', dirname(__FILE__) . '/');
+require_once 'db/DbHelp.php';
 class PayController extends Yaf_Controller_Abstract
 {
 
@@ -337,11 +340,18 @@ class PayController extends Yaf_Controller_Abstract
         $this->getView();
     }
     //模拟支付
-    public function listenpayOkAction(){
-        $view = $this->getView();
+    function listenpayOkAction(){
         $request = $this->getRequest(); 
-        $questionId=$request->getPost('questionId');
-        $answerId=$request->getPost('answerId');
+        $answerId = $request->getPost('answerId');
+        $dbHelp = DbHelp::getInstance();
+        $table = 'answer';
+        $sql = 'id = ?';
+        $value = array($answerId);
+        $answer = $dbHelp->findOne($table,$sql,$value);
+
+        $questionId=$answer['questionid'];
+
+
         //数据存入session
         $session=Yaf_Session::getInstance();
         //"basePrice": basePrice, "addPrice": addPrice

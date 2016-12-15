@@ -103,10 +103,10 @@
     <div class="cont">
         <span class="closed"></span>
         <div class="personInfo">
-            <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a>
+            <!-- <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a> -->
             <div class="des">
                 <h3 id="infoName">唐老师</h3>
-                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <!-- <p class="identity" id="infoTeam">巅峰财富|策略分析师</p> -->
                 <div class="showpic"><img src="images/temp.jpg" id="infoimg"/></div>
                 <p class="pram" id="infoContent">
                     尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
@@ -520,7 +520,7 @@
                                     html += '<span>';
                                     html += '<p class="pram">' + json[i].questioncontent + '</p>';
                                     html += '<div class="personInfo">';
-                                    html += '<a href="/apk/ask.html?id=' + json[i].ut + '" class="img"><img src="' + json[i].fileurl + '"/></a>';
+                                    html += '<a href="/apk/ask.html?id=' + json[i].ut + '" class="img"><img src="' + json[i].imgs + '"/></a>';
                                     html += '<div class="des">';
                                     //姓名
                                     html += '<h3>' + json[i].user_name + '</h3>';
@@ -571,22 +571,45 @@
     //旁听支付调用
     function paylisten(answerId) {
         //得到问题数据
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/question/simpleDetail',
+        //     data: {
+        //         "answerId": answerId
+        //     },
+        //     dataType: 'json',
+        //     timeout: 2000,
+        //     success: function (data) {
+        //         var questionId=data.data.questionid;
+        //         window.location.href="listenpay.html?answerId="+answerId+"&questionId="+questionId
+        //     },
+        //     error: function (xhr, type) {
+        //         alert('Ajax error!')
+        //     }
+        // })
         $.ajax({
-            type: 'POST',
-            url: '/question/simpleDetail',
-            data: {
-                "answerId": answerId
-            },
-            dataType: 'json',
-            timeout: 2000,
-            success: function (data) {
-                var questionId=data.data.questionid;
-                window.location.href="listenpay.html?answerId="+answerId+"&questionId="+questionId
-            },
-            error: function (xhr, type) {
-                alert('Ajax error!')
-            }
-        })
+                    type: 'POST',
+                    url: '/pay/listenpayOk',
+                    data: {
+                        // "questionId": questionId,
+                        "answerId" : answerId
+                    },
+                    dataType: 'json',
+                    timeout: 2000,
+                    success: function (data) {
+                        // var data= JSON.parse(data);
+                        if(data.code == 0){
+                            top.location.href="http://"+data.data;
+                        }else{
+                            // window.history.back(-1);
+                        }
+
+                        // alert(url);
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!')
+                    }
+                })
     }
     function hottest(){
         window.location.href="hottest.html";

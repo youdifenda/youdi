@@ -35,8 +35,8 @@ $(function () {
                     $('#infoName').html(json[i].user_name);
                     $('#infoTeam').html(json[i].user_name);
                     $('#infoContent').html(json[i].content);
-                    $('#infohead').attr("src", json[i].fileurl);
-                    $('#infoimg').attr("src", json[i].fileurl);
+                    $('#infohead').attr("src", json[i].imgs);
+                    $('#infoimg').attr("src", json[i].imgs);
                 }
                 //返回的数据为空的情况
                 //后台做验证
@@ -127,9 +127,9 @@ $(function () {
                             html += '<li class="myli" state="0" data="' + result[i].answerid + '">';
                             html += '<p class="pram">' + result[i].content + '</p>';
                             html += '<div class="personInfo">';
-                            html += '<a href="/apk/ask.html?id='+result[i].answerut+'" class="img"><img src="' + result[i].answerUserImg + '" /></a>';
+                            html += '<a href="#" class="img"><img src="' + result[i].userImg + '" /></a>';
                             html += '<div class="des">';
-                            html += '<h3>' + result[i].answerUserName + '</h3>';
+                            html += '<h3>' + result[i].userName + '</h3>';
                             html += '<p class="identity">巅峰财富|策略分析师</p>';
                             html += '<div class="status">';
                             html += '<span class="play" id="' + result[i].answerid + '"><i></i>点击播放</span> 14 \'\'';
@@ -143,9 +143,9 @@ $(function () {
                             html += '<li class="myli" state="0" data="' + result[i].answerid + '">';
                             html += '<p class="pram">' + result[i].content + '</p>';
                             html += '<div class="personInfo">';
-                            html += '<a href="/apk/ask.html?id='+result[i].answerut+'" class="img"><img src="' + result[i].answerUserImg + '"/></a>';
+                            html += '<a href="#" class="img"><img src="' + result[i].userImg + '"/></a>';
                             html += '<div class="des">';
-                            html += '<h3>' + result[i].answerUserName + '</h3>';
+                            html += '<h3>' + result[i].userName + '</h3>';
                             html += '<p class="identity">巅峰财富|策略分析师</p>';
                             html += '<div class="status">';
                             html += '<a href="javascript:;" class="vbtn ' + action + ' " id = ' + result[i].answerid + '">点击查看</a>';
@@ -160,7 +160,7 @@ $(function () {
                     else if (result[i].state == 1) {
                         html += '<li class="myli" state="1" data="' + result[i].id + '">';
                         html += '<div class="personInfo">';
-                        html += '<a href="/apk/ask.html?id='+result[i].ut+'" class="img"><img src="' + result[i].userImg + '"/></a>';
+                        html += '<a href="#" class="img"><img src="' + result[i].userImg + '"/></a>';
                         html += '<div class="des">';
                         html += '<h3>' + result[i].userName + '</h3>';
                         html += '<p class="identity"><span class="state">待回答</span>巅峰财富|策略分析师</p>';
@@ -174,7 +174,7 @@ $(function () {
                     else if (result[i].state == 2) {
                         html += '<li>';
                         html += '<div class="personInfo">';
-                        html += '<a href="/apk/ask.html?id='+result[i].ut+'" class="img"><img src="' + result[i].userImg + '"/></a>';
+                        html += '<a href="#" class="img"><img src="' + result[i].userImg + '"/></a>';
                         html += '<div class="des">';
                         html += '<h3>' + result[i].userName + '</h3>';
                         html += '<p class="identity"><span class="state overstate">已过期</span>巅峰财富|策略分析师</p>';

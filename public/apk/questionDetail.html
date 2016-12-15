@@ -38,9 +38,9 @@
         <div class="des">
             <h3 id="answerUserName"><a href="#" class="share off"></a>唐老师</h3>
             <p class="identity" id="answerUserDes">巅峰财富|策略分析师</p>
-            <p class="pram">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
+            <p class="pram" id="answerAbstract">老师介绍：民商法学 职 称：副教授 办公地址：（未公开） 办公电话：021-65903537 电子邮件：dingfengchu@mail.shufe.edu.cn 个人网站：点击进入[
                 丁凤楚 男，汉</p>
-            <p class="identity ideTime"><span><i></i>15分钟前</span><b class="da"></b></p>
+            <p class="identity ideTime" ><span id="answertime"><i></i>15分钟前</span><b class="da"></b></p>
             <div class="status" id="type">
                 <span class="play"><i></i>点击播放</span> 14 ''
             </div>
@@ -60,10 +60,10 @@
     <div class="cont">
         <span class="closed"></span>
         <div class="personInfo">
-            <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a>
+            <!-- <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a> -->
             <div class="des">
                 <h3 id="infoName">唐老师</h3>
-                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <!-- <p class="identity" id="infoTeam">巅峰财富|策略分析师</p> -->
                 <div class="showpic"><img src="images/temp.jpg" id="infoimg"/></div>
                 <p class="pram" id="infoContent">
                     尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
@@ -102,7 +102,7 @@
 <script src="js/zepto.min.js"></script>
 <script src="js/all.js"></script>
 <script src="js/recent.js"></script>
-<script src="js/common.js"></script>
+<!-- <script src="js/common.js"></script> -->
 <script type="text/javascript">
     $(function () {
         var answerId = getArgsFromHref('answerId');
@@ -119,7 +119,7 @@
                     var questionTop = '<span class="price">￥' + result.questionPrice + 'U豆</span>' + result.questionUserName;
                     $('#questionUserImg').attr('src', result.questionUserImg);
                     $('#questionTop').html(questionTop);
-                    $('#questionUserDes').html(result.questionUserName);
+                    $('#questionUserDes').html(result.questionhonor);
                     var questionContent = '<span class="wen"></span>' + result.questionContent;
                     $('#questionContent').html(questionContent);
                     $('#questionTime').html(result.questionTime);
@@ -133,8 +133,10 @@
                         follow = 'off';
                     }
                     var answerUserName = '<a href="#" class="share ' + follow + '" onclick="follow(\'' + result.answerUT + '\')"></a>' + result.answerUserName;
-                    $('#answerUserName').html(answerUserName);
-                    $('#answerUserDes').html(result.answerUserName);
+                    $('#answerUserName').html(result.answerUserName);
+                    $('#answerAbstract').html(result.answerAbstract);
+                    $('#answerUserDes').html(result.answerhonor);
+                    $('#answertime').html(result.answerTime);
                     //问题类型为0 图文
                     if (result.answerType == 0) {
                         var str =  '<a href="javascript:;" class="vbtn info " id = ' + result.answerId + '>查看内容</a>';
@@ -210,7 +212,7 @@
                         $('#infoName').html(json[i].user_name);
                         $('#infoTeam').html(json[i].user_name);
                         $('#infoContent').html(json[i].content);
-                        $('#infohead').attr("src", json[i].fileurl);
+                        // $('#infohead').attr("src", json[i].fileurl);
                         $('#infoimg').attr("src", json[i].fileurl);
                     }
                     //返回的数据为空的情况

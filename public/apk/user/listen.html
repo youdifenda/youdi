@@ -79,10 +79,10 @@
     <div class="cont">
         <span class="closed"></span>
         <div class="personInfo">
-            <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a>
+            <!-- <a href="#" class="img"><img src="images/peo.png" id="infohead"/></a> -->
             <div class="des">
                 <h3 id="infoName">唐老师</h3>
-                <p class="identity" id="infoTeam">巅峰财富|策略分析师</p>
+                <!-- <p class="identity" id="infoTeam">巅峰财富|策略分析师</p> -->
                 <div class="showpic"><img src="images/temp.jpg" id="infoimg"/></div>
                 <p class="pram" id="infoContent">
                     尽管央行今日继续大额净投放，但似乎并不能足够缓解资金紧张。央行今日进行了1150亿元7天期、850亿元14天期逆回购操作、350亿元28天期逆回购操作。今天有600亿逆回购到期，还将有1660亿元6个月期中期借贷便利（MLF）到期。也就是说，央行公开市场今日净投放1750亿元。王v妃王妃
@@ -118,7 +118,7 @@
 </div> -->
 <script src="../js/zepto.min.js"></script>
 <script src="../js/all.js"></script>
-<script src="../js/common.js"></script>
+<!-- <script src="../js/common.js"></script> -->
 <script type="text/javascript">
     $(function () {
         $('.dalist').on('click', '.personInfo .info', function () {
@@ -135,7 +135,7 @@
                         $('#infoName').html(json[i].user_name);
                         $('#infoTeam').html(json[i].user_name);
                         $('#infoContent').html(json[i].content);
-                        $('#infohead').attr("src", json[i].fileurl);
+                        // $('#infohead').attr("src", json[i].fileurl);
                         $('#infoimg').attr("src", json[i].fileurl);
                     }
                     //返回的数据为空的情况
@@ -224,7 +224,7 @@
                             html += '<p class="pram">' + json[i].questioncontent + '</p>';
                             html += '<div class="personInfo">';
                             //图片的点击效果
-                            html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].fileurl + '></a>';
+                            html += '<a href= "/apk/ask.html?id=' + json[i].ut + '" class="img"><img src=' + json[i].imgs + '></a>';
                             html += '<div class="des">';
                             //用户名称
                             html += '<h3>' + json[i].user_name + '</h3>';
@@ -250,7 +250,7 @@
                             html += '<span>';
                             html += '<p class="pram">' + '</p>';
                             html += '<div class="personInfo">';
-                            html += '<a href="/apk/ask.html?id=' + json[i].ut + '" class="img"><img src="' + json[i].fileurl + '"/></a>';
+                            html += '<a href="/apk/ask.html?id=' + json[i].ut + '" class="img"><img src="' + json[i].imgs + '"/></a>';
                             html += '<div class="des">';
                             //姓名
                             html += '<h3>' + json[i].user_name + '</h3>';

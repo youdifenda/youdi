@@ -8,9 +8,14 @@
  */
 define('ROOT', dirname(__FILE__) . '/');
 require_once 'db/DbHelp.php';
-
 class QuestionController extends Yaf_Controller_Abstract
 {
+
+
+
+    // public function abcdAction(){
+    //     $dbHelp = DbHelp::getInstance();
+    // }
     //提交问题
     public function submitAction()
     {
@@ -135,6 +140,9 @@ class QuestionController extends Yaf_Controller_Abstract
         // file_put_contents('D:a.txt',$value);
         $sqlAnswer = ' ORDER BY createtime DESC LIMIT ?,? ';
         $result = $this->getAnswer($value, $sqlAnswer);
+        foreach ($result as  &$value) {
+            $value['imgs']=@ltrim($value['imgs'],'../');
+        }
         // file_put_contents('D:a.txt',$result);
         $json = UserController::baseJson();
         $json['data'] = $result;
@@ -154,6 +162,14 @@ class QuestionController extends Yaf_Controller_Abstract
         $sql = 'order by listennum desc,createtime desc LIMIT ?,?';
         $value = array(($page) * 10, ($page + 1) * 10);
         $result = $this->getAnswer($value, $sql);
+        //查询是否收藏
+
+
+        // var_dump($result);
+        foreach ($result as  &$value) {
+            $value['imgs']=@ltrim($value['imgs'],'../');
+            $value['collect']=$this->getCollect($value['id'],$value['ut']);    
+        }
 
 
         $json = UserController::baseJson();
@@ -166,6 +182,26 @@ class QuestionController extends Yaf_Controller_Abstract
         return false;
         
         
+    }
+
+
+    //查询是否收藏
+    public function getCollect($answerid, $ut){
+        
+        $dbHelp = DbHelp::getInstance();
+        $table = 'collect';
+        $sql = ' answerid = ? and ut = ?';
+        $value = array($answerid, $ut);
+        $collect = $dbHelp->findOne($table, $sql, $value);
+        // var_dump($collect);
+        //收藏了该问题
+        if (!empty($collect)) {
+            $result = 1;
+        } else {
+            $result = 0;
+        }
+        return $result;
+        file_put_contents('d:a.txt',$result);
     }
 
     //得到问题的数据
@@ -254,6 +290,8 @@ class QuestionController extends Yaf_Controller_Abstract
                     //还可以添加用户头像，用户公司
                     $j['user_name'] = $user['user_name'];
                     $j['imgs'] = $user['imgs'];
+                    $j['honor'] = $user['honor'];
+                    $j['abstract'] = $user['abstract'];
 
                     //是否登录,是否已经付钱
                     //是否是图文 type  0: 图文 , 1: 录音
@@ -444,8 +482,10 @@ class QuestionController extends Yaf_Controller_Abstract
             $sql = 'ut = ?';
             $value = array($answer['ut']);
             $user = $dbHelp->findOne($table, $sql, $value);
-            $result['answerImg'] = $user['imgs'];
+            $result['answerImg'] = @ltrim($user['imgs'],"../");
             $result['answerUserName'] = $user['user_name'];
+            $result['answerabstract'] = $user['abstract'];
+            $result['answerhonor'] = $user['honor'];
             //查询关注表
             //登录用户是否关注了回答问题的用户
             $table = 'follow';
@@ -488,7 +528,9 @@ class QuestionController extends Yaf_Controller_Abstract
             $value = array($question['ut']);
             $user = $dbHelp->findOne($table, $sql, $value);
             $result['questionUserName'] = $user['user_name'];
-            $result['questionUserImg'] = $user['imgs'];
+            $result['questionhonor'] = $user['honor'];
+            // $result['questionabstract'] = $user['abstract'];
+            $result['questionUserImg'] =  @ltrim($user['imgs'],"../");
 
             $json = UserController::baseJson();
             $json['code'] = 0;
